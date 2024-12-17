@@ -8,7 +8,7 @@ ci:
 
 deps:
 - changed-files:
-  - any-glob-to-any-file: ['**/package.json', '**/pyproject.toml']
+  - any-glob-to-any-file: ['**/go.mod']
 - head-branch: ['^renovate/']
 
 docs:
@@ -17,10 +17,6 @@ docs:
 
 renovate:
 - head-branch: ['^renovate/']
-
-schemas:
-- changed-files:
-  - any-glob-to-any-file: ['schemas/**/*']
 
 tests:
 - changed-files:
