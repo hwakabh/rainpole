@@ -2,8 +2,13 @@
 Dummy Company APIs with Go
 
 ## Local Setup
-Environmental variables, Makefile, docker-compose, ...etc
+TBA: Environmental variables, Makefile, docker-compose, ...etc
+
+## Deployment
+TBA
 
 ## Good to know
+TBA
 
 ## License
+TBA
