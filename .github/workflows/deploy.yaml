@@ -26,7 +26,7 @@ jobs:
         uses: 'google-github-actions/auth@v2'
         with:
           workload_identity_provider: 'projects/1037550336239/locations/global/workloadIdentityPools/default-pool/providers/default-provider'
-          service_account: 'gh-action-cloudrun@hwakabh-dev.iam.gserviceaccount.com'
+          service_account: 'gha-rainpole-cloudrun@hwakabh-dev.iam.gserviceaccount.com'
           token_format: access_token
 
       # https://github.com/google-github-actions/deploy-cloudrun
