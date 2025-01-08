@@ -1,0 +1,35 @@
+name: Deploy CI
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy package to Cloud Run
+    runs-on: ubuntu-24.04
+
+    # For Workload Identity
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # https://github.com/google-github-actions/auth
+      - name: Auth with Google Cloud
+        id: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/1037550336239/locations/global/workloadIdentityPools/default-pool/providers/default-provider'
+          service_account: 'gha-rainpole-cloudrun@hwakabh-dev.iam.gserviceaccount.com'
+          token_format: access_token
+
+      # https://github.com/google-github-actions/deploy-cloudrun
+      - uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole:main'
+          service: 'rainpole-api'
