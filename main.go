@@ -24,7 +24,7 @@ func main() {
 
 	// Register mappings between URLs and handler
 	mux.HandleFunc("/", DefaultRoute)
-	mux.HandleFunc("/healthz", HealthCheckRoute)
+	mux.HandleFunc("/health", HealthCheckRoute)
 	mux.HandleFunc("/api/v1/", RestRoute)
 	mux.HandleFunc("/graphql", GraphqlRoute)
 
