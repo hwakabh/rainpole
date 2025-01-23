@@ -1,23 +1,52 @@
-name: Deploy CI
+name: Push and Deploy
+
 on:
   push:
     branches:
-      - main
+      - 'main'
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-  deploy:
-    name: Deploy package to Cloud Run
+  push-and-deploy:
     runs-on: ubuntu-24.04
 
-    # For Workload Identity
     permissions:
-      contents: 'read'
+      contents: read
+      packages: write
       id-token: 'write'
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      # https://github.com/docker/login-action
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3.3.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # https://github.com/docker/metadata-action
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5.6.1
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # https://github.com/docker/build-push-action
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v6.12.0
+        id: push
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       # https://github.com/google-github-actions/auth
       - name: Auth with Google Cloud
@@ -29,7 +58,8 @@ jobs:
           token_format: access_token
 
       # https://github.com/google-github-actions/deploy-cloudrun
-      - uses: 'google-github-actions/deploy-cloudrun@v2'
+      - name: Update Cloud Run instances with latest image digest
+        uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
-          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole:main'
+          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole@${{ steps.push.outputs.digest }}'
           service: 'rainpole-api'
