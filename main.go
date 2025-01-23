@@ -13,6 +13,10 @@ type HealthStatusResponse struct {
 	StatusMessage string `json:"status"`
 }
 
+type RestMessage struct {
+	Body string `json:"content"`
+}
+
 func main() {
 	fmt.Println("Starting web server ...")
 	// Instantiate multiplexer
@@ -32,6 +36,7 @@ func main() {
 		WriteTimeout:   30 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
+	fmt.Println("listening server port [ " + server.Addr + " ] ...")
 	server.ListenAndServe()
 
 }
@@ -42,12 +47,8 @@ func DefaultRoute(w http.ResponseWriter, r *http.Request) {
 	// fmt.Fprintf(w, "hello, developers")
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	// using anonymous struct
-	json.NewEncoder(w).Encode(struct {
-		RootMessage string `json:"content"`
-	}{
-		RootMessage: "hello, developers",
+	json.NewEncoder(w).Encode(RestMessage{
+		Body: "hello, developers",
 	})
 }
 
@@ -57,23 +58,25 @@ func HealthCheckRoute(w http.ResponseWriter, r *http.Request) {
 		StatusCode:    http.StatusOK,
 		StatusMessage: "ok",
 	}
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(resp)
 }
 
 func RestRoute(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	// TODO: replace with using type structs
-	json.NewEncoder(w).Encode(struct {
-		MessageBody string `json:"content"`
-	}{
-		MessageBody: "API root!",
+	json.NewEncoder(w).Encode(RestMessage{
+		Body: "API root!",
 	})
 }
 
 // TODO: implement with gqlgen packages
 func GraphqlRoute(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	// TODO: replace with using type structs
+	json.NewEncoder(w).Encode(RestMessage{
+		Body: "GraphQL API root!",
+	})
 }
