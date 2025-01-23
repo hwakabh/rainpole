@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -11,10 +13,13 @@ func TestDefaultRoute(t *testing.T) {
 	mock := httptest.NewServer(http.HandlerFunc(DefaultRoute))
 	defer mock.Close()
 
-	resp, err := http.Get(mock.URL)
+	resp, err := http.Get(mock.URL + "/")
 	if err != nil {
 		t.Error(err)
 	}
+
+	txt, err := io.ReadAll(resp.Body)
+	fmt.Printf("Got: %s", string(txt))
 
 	// txt, err := io.ReadAll(resp.Body)
 	// if err != nil {
@@ -37,10 +42,13 @@ func TestHealthCheckRoute(t *testing.T) {
 	mock := httptest.NewServer(http.HandlerFunc(HealthCheckRoute))
 	defer mock.Close()
 
-	resp, err := http.Get(mock.URL)
+	resp, err := http.Get(mock.URL + "/health")
 	if err != nil {
 		t.Error(err)
 	}
+
+	txt, err := io.ReadAll(resp.Body)
+	fmt.Printf("Got: %s", string(txt))
 
 	// txt, err := io.ReadAll(resp.Body)
 	// if err != nil {
