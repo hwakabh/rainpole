@@ -10,7 +10,7 @@
 #- asia-northeast1-docker.pkg.dev/hc-fedc7d2f9b7249779e6ff9f8576/production/rainpole:latest
 
 images:
-- $_TARGET_IMAGE_REF/rainpole:latest
+- asia-northeast1-docker.pkg.dev/$_TARGET_IMAGE_REF/rainpole:latest
 
 options:
   logging: 'CLOUD_LOGGING_ONLY'
