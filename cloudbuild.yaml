@@ -23,4 +23,4 @@ options:
 #   - gcr.io/buildpacks/builder
 
 # service-account is in landing-zone project, and should be added in stage/production project
-# serviceAccount: projects/hc-82d824f2966b457a9e02839d9cf/serviceAccounts/cloud-build-user@hc-82d824f2966b457a9e02839d9cf.iam.gserviceaccount.com
+serviceAccount: projects/hc-82d824f2966b457a9e02839d9cf/serviceAccounts/cloud-build-user@hc-82d824f2966b457a9e02839d9cf.iam.gserviceaccount.com
