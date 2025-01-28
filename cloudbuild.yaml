@@ -1,0 +1,25 @@
+# https://cloud.google.com/build/docs/build-config-file-schema?hl=ja#structure_of_a_build_config_file
+
+#images:
+# # push within landing-zone project
+#- asia-northeast1-docker.pkg.dev/hc-82d824f2966b457a9e02839d9cf/rainpole-prod/rainpole:latest
+# # push for stage project
+#- asia-northeast1-docker.pkg.dev/hc-d5bedf6be4bc4e43a96bddc8767/stage/rainpole:latest
+# # push for production project
+#- asia-northeast1-docker.pkg.dev/hc-fedc7d2f9b7249779e6ff9f8576/production/rainpole:latest
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+# # cloudbuild configurations file | Dockerfile | Buildpacks
+# steps:
+# - name: gcr.io/k8s-skaffold/pack
+#   args:
+#   - pack
+#   - build
+#   - asia-northeast1-docker.pkg.dev/hc-d5bedf6be4bc4e43a96bddc8767/stage/rainpole:latest
+#   - --builder
+#   - gcr.io/buildpacks/builder
+
+# # service-account is in landing-zone project, and should be added in stage/production project
+# serviceAccount: projects/hc-82d824f2966b457a9e02839d9cf/serviceAccounts/cloud-build-user@hc-82d824f2966b457a9e02839d9cf.iam.gserviceaccount.com
