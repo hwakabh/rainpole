@@ -1,68 +1,69 @@
 package main
 
 import (
-	"fmt"
-	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func TestDefaultRoute(t *testing.T) {
-	// expected := "{\"content\":\"hello, developers\"}"
-	mock := httptest.NewServer(http.HandlerFunc(DefaultRoute))
-	defer mock.Close()
+func TestDefaultRouteCode(t *testing.T) {
+	req, _ := http.NewRequest(http.MethodGet, "/", nil)
+	resp := httptest.NewRecorder()
 
-	resp, err := http.Get(mock.URL + "/")
-	if err != nil {
-		t.Error(err)
+	DefaultRoute(resp, req)
+
+	if resp.Code != 200 {
+		t.Errorf("GET %s: expected status code is %d; but got %d", req.URL, 200, resp.Code)
 	}
-
-	txt, err := io.ReadAll(resp.Body)
-	fmt.Printf("Got: %s", string(txt))
-
-	// txt, err := io.ReadAll(resp.Body)
-	// if err != nil {
-	// 	t.Errorf("Failed to read response body")
-	// 	t.Error(err)
-	// }
-	resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		t.Errorf("GET %s: expected status code is %d; got %d", mock.URL, 200, resp.StatusCode)
-	}
-	// if string(txt) != expected {
-	// 	t.Errorf("expected body [ %v ]; got [ %v ]", expected, string(txt))
-	// }
 }
 
-func TestHealthCheckRoute(t *testing.T) {
-	// // expected := "{\"code\":200,\"status\":\"ok\"}"
-	// expected := []byte(`{"code":200,"status":"ok"}`)
-	mock := httptest.NewServer(http.HandlerFunc(HealthCheckRoute))
-	defer mock.Close()
+func TestDefaultRouteBody(t *testing.T) {
+	// If we have both positive/negative case for each API endpoint,
+	// we can use SubTesting with t.Run()
+	t.Run("Positive Case", func(t *testing.T) {
+		expected := "{\"content\":\"hello, developers\"}\n"
+		req, _ := http.NewRequest(http.MethodGet, "/", nil)
+		resp := httptest.NewRecorder()
 
-	resp, err := http.Get(mock.URL + "/health")
-	if err != nil {
-		t.Error(err)
+		// Call imported & targeted function
+		DefaultRoute(resp, req)
+
+		got := resp.Body.String()
+		// fmt.Printf("type of got: %T \n", got)
+
+		if got != expected {
+			t.Errorf("got: [ %q ], expected: [ %q ] \n", got, expected)
+			t.Errorf("Called endpoint: %s \n", req.URL)
+			t.Errorf("Got Status code: %d \n", resp.Code)
+		}
+	})
+
+}
+
+func TestHealthCheckRouteCode(t *testing.T) {
+	req, _ := http.NewRequest(http.MethodGet, "/health", nil)
+	resp := httptest.NewRecorder()
+
+	HealthCheckRoute(resp, req)
+
+	if resp.Code != 200 {
+		t.Errorf("GET %s: expected status code is %d; but got %d", req.URL, 200, resp.Code)
 	}
+}
 
-	txt, err := io.ReadAll(resp.Body)
-	fmt.Printf("Got: %s", string(txt))
+func TestHealthCheckRouteBody(t *testing.T) {
+	req, _ := http.NewRequest(http.MethodGet, "/health", nil)
+	resp := httptest.NewRecorder()
 
-	// txt, err := io.ReadAll(resp.Body)
-	// if err != nil {
-	// 	t.Errorf("Failed to read response body")
-	// 	t.Error(err)
-	// }
-	resp.Body.Close()
+	// Call imported & targeted function
+	HealthCheckRoute(resp, req)
 
-	if resp.StatusCode != 200 {
-		t.Errorf("GET %s: expected status code is %d; got %d", mock.URL, 200, resp.StatusCode)
+	got := resp.Body.String()
+	expected := "{\"code\":200,\"status\":\"ok\"}\n"
+
+	if got != expected {
+		t.Errorf("got: [ %q ], expected: [ %q ] \n", got, expected)
+		t.Errorf("Called endpoint: %s \n", req.URL)
+		t.Errorf("Got Status code: %d \n", resp.Code)
 	}
-	// if string(txt) != string(expected) {
-	// 	fmt.Printf("%v\n", expected)
-	// 	fmt.Printf("%v\n", txt)
-	// 	t.Errorf("expected body [ %v ]; got [ %v ]", expected, txt)
-	// }
 }
