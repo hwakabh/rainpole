@@ -7,16 +7,6 @@ import (
 	"time"
 )
 
-// Typings of response body from /healthz
-type HealthStatusResponse struct {
-	StatusCode    int    `json:"code"`
-	StatusMessage string `json:"status"`
-}
-
-type RestMessage struct {
-	Body string `json:"content"`
-}
-
 func main() {
 	fmt.Println("Starting web server ...")
 	// Instantiate multiplexer
@@ -49,34 +39,5 @@ func DefaultRoute(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(RestMessage{
 		Body: "hello, developers",
-	})
-}
-
-func HealthCheckRoute(w http.ResponseWriter, r *http.Request) {
-	resp := HealthStatusResponse{
-		// control API status-code with http.StatusXXX
-		StatusCode:    http.StatusOK,
-		StatusMessage: "ok",
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(resp)
-}
-
-func RestRoute(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(RestMessage{
-		Body: "API root!",
-	})
-}
-
-// TODO: implement with gqlgen packages
-func GraphqlRoute(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	// TODO: replace with using type structs
-	json.NewEncoder(w).Encode(RestMessage{
-		Body: "GraphQL API root!",
 	})
 }
