@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+type RootResponse struct {
+	Body string `json:"content"`
+}
+
 func main() {
 	fmt.Println("Starting web server ...")
 	// Instantiate multiplexer
@@ -35,9 +39,10 @@ func DefaultRoute(w http.ResponseWriter, r *http.Request) {
 	// fmt.Fprintln(w, r.Method, r.URL)
 	// fmt.Fprintln(w, r.Proto)
 	// fmt.Fprintf(w, "hello, developers")
+	resp := RootResponse{
+		Body: "hello, developers",
+	}
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(RestMessage{
-		Body: "hello, developers",
-	})
+	json.NewEncoder(w).Encode(resp)
 }
