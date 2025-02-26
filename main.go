@@ -1,19 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
 )
 
-// Typings of response body from /healthz
-type HealthStatusResponse struct {
-	StatusCode    int    `json:"code"`
-	StatusMessage string `json:"status"`
-}
-
-type RestMessage struct {
+type RootResponse struct {
 	Body string `json:"content"`
 }
 
@@ -22,10 +15,20 @@ func main() {
 	// Instantiate multiplexer
 	mux := http.NewServeMux()
 
-	// Register mappings between URLs and handler
-	mux.HandleFunc("/", DefaultRoute)
+	// --- Register mappings between URLs and handler
+	// load staticfiles
+	fileServer := http.FileServer(http.Dir("./web"))
+	mux.Handle("/", http.StripPrefix("/", fileServer))
+
+	// health check
 	mux.HandleFunc("/health", HealthCheckRoute)
+
+	// REST-APIs endpoints
 	mux.HandleFunc("/api/v1/", RestRoute)
+	mux.HandleFunc("/api/v1/uuid", GetRandomUuid)
+	// mux.HandleFunc("/api/v1/companies", GetCompany)
+
+	// GraphQL endpoints
 	mux.HandleFunc("/graphql", GraphqlRoute)
 
 	// Using struct in net/http with instantiated multiplexer
@@ -38,45 +41,4 @@ func main() {
 	}
 	fmt.Println("listening server port [ " + server.Addr + " ] ...")
 	server.ListenAndServe()
-
-}
-
-func DefaultRoute(w http.ResponseWriter, r *http.Request) {
-	// fmt.Fprintln(w, r.Method, r.URL)
-	// fmt.Fprintln(w, r.Proto)
-	// fmt.Fprintf(w, "hello, developers")
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(RestMessage{
-		Body: "hello, developers",
-	})
-}
-
-func HealthCheckRoute(w http.ResponseWriter, r *http.Request) {
-	resp := HealthStatusResponse{
-		// control API status-code with http.StatusXXX
-		StatusCode:    http.StatusOK,
-		StatusMessage: "ok",
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(resp)
-}
-
-func RestRoute(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(RestMessage{
-		Body: "API root!",
-	})
-}
-
-// TODO: implement with gqlgen packages
-func GraphqlRoute(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	// TODO: replace with using type structs
-	json.NewEncoder(w).Encode(RestMessage{
-		Body: "GraphQL API root!",
-	})
 }
