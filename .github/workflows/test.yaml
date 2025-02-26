@@ -22,7 +22,18 @@ jobs:
           go-version-file: './go.mod'
 
       - name: Build Testing
-        run: go build -v .
+        run: "GOOS=linux GOARCH=amd64 go build -v -o ./rainpole"
 
       - name: Run Tests
         run: go test -v
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Initialize packer
+        run: "packer init ./image.pkr.hcl"
+
+      - name: Run `packer validate`
+        run: "packer validate ./image.pkr.hcl"
