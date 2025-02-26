@@ -15,13 +15,20 @@ func main() {
 	// Instantiate multiplexer
 	mux := http.NewServeMux()
 
+	// --- Register mappings between URLs and handler
 	// load staticfiles
 	fileServer := http.FileServer(http.Dir("./web"))
 	mux.Handle("/", http.StripPrefix("/", fileServer))
 
-	// Register mappings between URLs and handler
+	// health check
 	mux.HandleFunc("/health", HealthCheckRoute)
+
+	// REST-APIs endpoints
 	mux.HandleFunc("/api/v1/", RestRoute)
+	mux.HandleFunc("/api/v1/uuid", GetRandomUuid)
+	// mux.HandleFunc("/api/v1/companies", GetCompany)
+
+	// GraphQL endpoints
 	mux.HandleFunc("/graphql", GraphqlRoute)
 
 	// Using struct in net/http with instantiated multiplexer
