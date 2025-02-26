@@ -1,4 +1,4 @@
-package main
+package rainpole
 
 import (
 	"encoding/json"
