@@ -23,18 +23,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # https://github.com/docker/metadata-action
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5.6.1
+      - name: Setup Go runtime
+        uses: actions/setup-go@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          go-version-file: 'go.mod'
 
-      # https://github.com/docker/build-push-action
-      - name: Build only on CI
-        uses: docker/build-push-action@v6.14.0
+      - name: Build application with single binary
+        run: "GOOS=linux GOARCH=amd64 go build -o ./rainpole"
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
         with:
-          context: .
-          push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Initialize packer
+        run: "packer init ./image.pkr.hcl"
+
+      - name: Run `packer validate`
+        run: "packer validate ./image.pkr.hcl"

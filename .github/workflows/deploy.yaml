@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  PRODUCT_VERSION: "1.11.2"
 
 jobs:
   push-and-deploy:
@@ -23,30 +24,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # https://github.com/docker/login-action
-      - name: Log in to the Container registry
-        uses: docker/login-action@v3.3.0
+      - name: Setup Go runtime
+        uses: actions/setup-go@v5
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          go-version-file: 'go.mod'
 
-      # https://github.com/docker/metadata-action
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5.6.1
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Build application with single binary
+        run: "GOOS=linux GOARCH=amd64 go build -o ./rainpole"
 
-      # https://github.com/docker/build-push-action
-      - name: Build and push to GHCR
-        uses: docker/build-push-action@v6.14.0
-        id: push
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
         with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Initialize packer
+        run: "packer init ./image.pkr.hcl"
+
+      - name: Run `packer validate`
+        run: "packer validate ./image.pkr.hcl"
+
+      - name: Build distroless image and push
+        run: "packer build -color=false -on-error=abort ./image.pkr.hcl"
 
       # https://github.com/google-github-actions/auth
       - name: Auth with Google Cloud
