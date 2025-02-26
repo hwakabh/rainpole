@@ -2,7 +2,15 @@
 Dummy Company APIs with Go
 
 ## Local Setup
-TBA: Environmental variables, Makefile, docker-compose, ...etc
+For build application with generating single binary of rainpole API:
+
+```shell
+% git clone git@github.com:hwakabh/rainpole.git
+% scripts/build.sh
+
+# Or, alternatively you can run `go build` manually
+% GOOS=linux GOARCH=amd64 go build -o ./cmd/rainpole
+```
 
 ## Deployment
 TBA
