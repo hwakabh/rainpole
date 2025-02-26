@@ -1,4 +1,4 @@
-package rainpole
+package main
 
 import (
 	"net/http"
@@ -18,18 +18,21 @@ func TestHealthCheckRouteCode(t *testing.T) {
 }
 
 func TestHealthCheckRouteBody(t *testing.T) {
-	req, _ := http.NewRequest(http.MethodGet, "/health", nil)
-	resp := httptest.NewRecorder()
+	t.Run("Positive Case", func(t *testing.T) {
+		expected := "{\"code\":200,\"status\":\"ok\"}\n"
 
-	// Call imported & targeted function
-	HealthCheckRoute(resp, req)
+		req, _ := http.NewRequest(http.MethodGet, "/health", nil)
+		resp := httptest.NewRecorder()
 
-	got := resp.Body.String()
-	expected := "{\"code\":200,\"status\":\"ok\"}\n"
+		// Call imported & targeted function
+		HealthCheckRoute(resp, req)
 
-	if got != expected {
-		t.Errorf("got: [ %q ], expected: [ %q ] \n", got, expected)
-		t.Errorf("Called endpoint: %s \n", req.URL)
-		t.Errorf("Got Status code: %d \n", resp.Code)
-	}
+		got := resp.Body.String()
+
+		if got != expected {
+			t.Errorf("got: [ %q ], expected: [ %q ] \n", got, expected)
+			t.Errorf("Called endpoint: %s \n", req.URL)
+			t.Errorf("Got Status code: %d \n", resp.Code)
+		}
+	})
 }

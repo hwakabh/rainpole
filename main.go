@@ -1,7 +1,6 @@
-package rainpole
+package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -16,8 +15,11 @@ func main() {
 	// Instantiate multiplexer
 	mux := http.NewServeMux()
 
+	// load staticfiles
+	fileServer := http.FileServer(http.Dir("./web"))
+	mux.Handle("/", http.StripPrefix("/", fileServer))
+
 	// Register mappings between URLs and handler
-	mux.HandleFunc("/", DefaultRoute)
 	mux.HandleFunc("/health", HealthCheckRoute)
 	mux.HandleFunc("/api/v1/", RestRoute)
 	mux.HandleFunc("/graphql", GraphqlRoute)
@@ -32,17 +34,4 @@ func main() {
 	}
 	fmt.Println("listening server port [ " + server.Addr + " ] ...")
 	server.ListenAndServe()
-
-}
-
-func DefaultRoute(w http.ResponseWriter, r *http.Request) {
-	// fmt.Fprintln(w, r.Method, r.URL)
-	// fmt.Fprintln(w, r.Proto)
-	// fmt.Fprintf(w, "hello, developers")
-	resp := RootResponse{
-		Body: "hello, developers",
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(resp)
 }
