@@ -31,7 +31,7 @@ jobs:
           go-version-file: 'go.mod'
 
       - name: Build application with single binary
-        run: "GOOS=linux GOARCH=amd64 go build -o ./rainpole"
+        run: "GOOS=linux GOARCH=amd64 go build -o ./cmd/rainpole"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
