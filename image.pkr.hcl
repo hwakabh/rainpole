@@ -38,9 +38,9 @@ build {
     inline = ["docker exec ${build.ID} ln -s /busybox/sh /bin/sh"]
   }
 
-  // Expected `GOOS=linux GOARCH=amd64 go build -o ./rainpole` outside packer
+  // Expected `GOOS=linux GOARCH=amd64 go build -o ./cmd/rainpole` outside packer
   provisioner "file" {
-    source = "./rainpole"
+    source = "./cmd/rainpole"
     destination = "/bin/rainpole"
   }
 
@@ -55,6 +55,14 @@ build {
       login_server = "ghcr.io"
       login_username = "hwakabh"
       login_password = var.github_token
+    }
+    // https://developer.hashicorp.com/packer/docs/post-processors/manifest
+    post-processor "manifest" {
+        output = "manifest.json"
+        custom_data = {
+            // https://developer.hashicorp.com/packer/integrations/hashicorp/docker/latest/components/builder/docker#build-shared-information-variables
+            image_digest = "${build.ImageSha256}"
+        }
     }
   }
 }

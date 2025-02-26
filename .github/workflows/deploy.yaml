@@ -45,9 +45,13 @@ jobs:
         run: "packer validate ./image.pkr.hcl"
 
       - name: Build distroless image and push
+        id: push
         env:
           GHCR_PUSH_PAT: ${{ secrets.GHCR_PUSH_PAT }}
-        run: "packer build -color=false -on-error=abort ./image.pkr.hcl"
+        run: |
+          packer build -color=false -on-error=abort ./image.pkr.hcl
+          echo "digest=$(cat manifest.json |jq -r '.builds[].custom_data.image_digest')" >> $GITHUB_OUTPUT
+
 
       # https://github.com/google-github-actions/auth
       - name: Auth with Google Cloud
