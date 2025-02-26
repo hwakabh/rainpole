@@ -3,9 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"strings"
 )
+
+const l = "abcdefghijklmnopqrstuvwxyz" + "0123456789"
 
 type RestResponse struct {
 	Body string `json:"content"`
@@ -16,7 +19,7 @@ type UUID string
 // Using receiver for implementing functions to user-defined types
 func (u UUID) validate() error {
 	if len(string(u)) != 36 {
-		return fmt.Errorf("UUID should be 34 chars including its hyphen.")
+		return fmt.Errorf("UUID should be 36 chars including its hyphen.")
 	}
 
 	elm := strings.Split(string(u), "-")
@@ -42,6 +45,35 @@ func (u UUID) validate() error {
 	return nil
 }
 
+func GenerateRandomUuid() UUID {
+	fmt.Printf("Generating random UUID...\n")
+
+	var first_part string
+	for i := 0; i < 8; i++ {
+		first_part += string(l[rand.Intn(len(l))])
+	}
+	var second_part string
+	for i := 0; i < 4; i++ {
+		second_part += string(l[rand.Intn(len(l))])
+	}
+	var third_part string
+	for i := 0; i < 4; i++ {
+		third_part += string(l[rand.Intn(len(l))])
+	}
+	var fourth_part string
+	for i := 0; i < 4; i++ {
+		fourth_part += string(l[rand.Intn(len(l))])
+	}
+	var last_part string
+	for i := 0; i < 12; i++ {
+		last_part += string(l[rand.Intn(len(l))])
+	}
+
+	gen_uuid := first_part + "-" + second_part + "-" + third_part + "-" + fourth_part + "-" + last_part
+
+	return UUID(gen_uuid)
+}
+
 func RestRoute(w http.ResponseWriter, r *http.Request) {
 	resp := RestResponse{
 		Body: "API root!",
@@ -53,12 +85,18 @@ func RestRoute(w http.ResponseWriter, r *http.Request) {
 
 // Generate random UUID
 func GetRandomUuid(w http.ResponseWriter, r *http.Request) {
-	var random_uuid UUID = "114bbea4-059f-483d-a604-f2c5ef688e5a"
-	fmt.Printf("Generated UUID: %s \n", random_uuid)
-
+	var random_uuid UUID = GenerateRandomUuid()
+	fmt.Printf("Result: [ %s ]\n", random_uuid)
 	if err := random_uuid.validate(); err != nil {
 		fmt.Println(err)
 	}
+
+	resp := RestResponse{
+		Body: string(random_uuid),
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	json.NewEncoder(w).Encode(resp)
 }
 
 // func GetCompany(w http.ResponseWriter, r *http.Request) {
