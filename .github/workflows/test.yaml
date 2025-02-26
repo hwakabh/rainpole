@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
+  go-tests:
     name: Run tests
     runs-on: ubuntu-24.04
     steps:
@@ -26,3 +26,21 @@ jobs:
 
       - name: Run Tests
         run: go test -v
+
+  packer-lint:
+    name: Validate Packer Template
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Initialize packer
+        run: "packer init ./image.pkr.hcl"
+
+      - name: Run `packer validate`
+        run: "packer validate ./image.pkr.hcl"
