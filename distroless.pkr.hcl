@@ -11,7 +11,7 @@ variable "github_token" {
   type = string
   description = "Personal Access Token for pushing image to GHCR"
   sensitive = true
-  default = env("GITHUB_PAT")
+  default = env("GHCR_PUSH_PAT")
 }
 
 source "docker" "distroless-base" {
