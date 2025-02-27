@@ -1,10 +1,9 @@
 name: Push and Deploy
 
 on:
-  pull_request:
-  # push:
-  #   branches:
-  #     - 'main'
+  push:
+    branches:
+      - 'main'
   workflow_dispatch:
 
 env:
