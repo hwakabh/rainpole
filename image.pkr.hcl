@@ -27,7 +27,7 @@ source "docker" "distroless-base" {
   run_command = [ "-d", "-i", "-t", "--entrypoint=/busybox/sh", "--", "{{.Image}}" ]
   changes = [
     "EXPOSE 8080",
-    "ENTRYPOINT [\"/bin/rainpole\"]"
+    "CMD [\"/bin/rainpole\"]"
   ]
 }
 
