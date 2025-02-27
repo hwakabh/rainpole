@@ -30,7 +30,7 @@ jobs:
           go-version-file: 'go.mod'
 
       - name: Build application with single binary
-        run: "GOOS=linux GOARCH=amd64 go build -o ./rainpole"
+        run: "GOOS=linux GOARCH=amd64 go build -o ./cmd/rainpole"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
@@ -44,7 +44,13 @@ jobs:
         run: "packer validate ./image.pkr.hcl"
 
       - name: Build distroless image and push
-        run: "packer build -color=false -on-error=abort ./image.pkr.hcl"
+        id: push
+        env:
+          GHCR_PUSH_PAT: ${{ secrets.GHCR_PUSH_PAT }}
+        run: |
+          packer build -color=false -on-error=abort ./image.pkr.hcl
+          echo "calverTag=$(cat manifest.json |jq -r '.builds[].custom_data.image_tag')" >> $GITHUB_OUTPUT
+
 
       # https://github.com/google-github-actions/auth
       - name: Auth with Google Cloud
@@ -59,5 +65,5 @@ jobs:
       - name: Update Cloud Run instances with latest image digest
         uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
-          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole@${{ steps.push.outputs.digest }}'
+          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole:${{ steps.push.outputs.calverTag }}'
           service: 'rainpole-api'
