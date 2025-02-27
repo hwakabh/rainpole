@@ -50,7 +50,7 @@ jobs:
           GHCR_PUSH_PAT: ${{ secrets.GHCR_PUSH_PAT }}
         run: |
           packer build -color=false -on-error=abort ./image.pkr.hcl
-          echo "digest=$(cat manifest.json |jq -r '.builds[].custom_data.image_digest')" >> $GITHUB_OUTPUT
+          echo "calverTag=$(cat manifest.json |jq -r '.builds[].custom_data.image_tag')" >> $GITHUB_OUTPUT
 
 
       # https://github.com/google-github-actions/auth
@@ -66,5 +66,5 @@ jobs:
       - name: Update Cloud Run instances with latest image digest
         uses: 'google-github-actions/deploy-cloudrun@v2'
         with:
-          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole@${{ steps.push.outputs.digest }}'
+          image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole@${{ steps.push.outputs.calverTag }}'
           service: 'rainpole-api'

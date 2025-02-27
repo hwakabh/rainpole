@@ -14,6 +14,11 @@ variable "github_token" {
   default = env("GHCR_PUSH_PAT")
 }
 
+locals {
+  // https://github.com/hashicorp/packer/issues/9430#issuecomment-645276351
+  calver_tag = formatdate("YYYYMMDD-hhmmss", timestamp())
+}
+
 source "docker" "distroless-base" {
   // define source container images
   image  = "gcr.io/distroless/static-debian12:debug"
@@ -47,7 +52,7 @@ build {
   post-processors {
     post-processor "docker-tag" {
       repository = "ghcr.io/hwakabh/rainpole"
-      tags       = ["main"]
+      tags       = [local.calver_tag, "main"]
       only       = ["docker.distroless-base"]
     }
     post-processor "docker-push" {
@@ -61,7 +66,7 @@ build {
         output = "manifest.json"
         custom_data = {
             // https://developer.hashicorp.com/packer/integrations/hashicorp/docker/latest/components/builder/docker#build-shared-information-variables
-            image_digest = "${build.ImageSha256}"
+            image_tag = local.calver_tag
         }
     }
   }
