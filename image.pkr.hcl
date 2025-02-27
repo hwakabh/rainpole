@@ -21,7 +21,8 @@ locals {
 
 source "docker" "distroless-base" {
   // define source container images
-  image  = "gcr.io/distroless/static-debian12:debug"
+  // `net` package of Go will require glibc, so need to use `base` instead of `static`
+  image  = "gcr.io/distroless/base-debian12:debug"
   commit = true
   platform = "linux/amd64"
   run_command = [ "-d", "-i", "-t", "--entrypoint=/busybox/sh", "--", "{{.Image}}" ]
