@@ -6,6 +6,7 @@ For build application with generating single binary of rainpole API:
 
 ```shell
 % git clone git@github.com:hwakabh/rainpole.git
+% scripts/initdb.sh
 % scripts/build.sh
 
 # Or, alternatively you can run `go build` manually
