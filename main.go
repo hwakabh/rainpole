@@ -17,7 +17,7 @@ func main() {
 
 	// --- Register mappings between URLs and handler
 	// load staticfiles
-	fileServer := http.FileServer(http.Dir("./web"))
+	fileServer := http.FileServer(http.Dir("./public"))
 	mux.Handle("/", http.StripPrefix("/", fileServer))
 
 	// health check
