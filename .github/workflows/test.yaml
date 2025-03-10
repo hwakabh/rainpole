@@ -23,7 +23,7 @@ jobs:
 
       - name: Setup Test Database and build app
         run: |
-          /bin/bash -c "scripts/initdb.sh && scripts/build.sh"
+          /bin/sh -c "scripts/initdb.sh && scripts/build.sh"
 
       - name: Run Tests
         run: go test -v
