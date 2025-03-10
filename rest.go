@@ -100,6 +100,72 @@ func GetRandomUuid(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
-// func GetCompany(w http.ResponseWriter, r *http.Request) {
+// HTTP client with types
+type HttpbinGetSchema struct {
+	Args      map[string]string `json:"args"`
+	HeaderMap map[string]string `json:"headers"`
+	OriginIp  string            `json:"origin"`
+	UrlString string            `json:"url"`
+}
 
+type SourceIpResponseBody struct {
+	Body   string `json:"content"`
+	IpAddr string `json:"address"`
+}
+
+func GetSourceIpAddress(w http.ResponseWriter, r *http.Request) {
+	url := "https://httpbin.org/get"
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Failed to invoke URL [ %s ]\n", url)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("Failed to get responses. (Code: %v)\n", resp.StatusCode)
+	}
+
+	raw := &HttpbinGetSchema{}
+
+	d := json.NewDecoder(resp.Body)
+	err = d.Decode(raw)
+	if err != nil {
+		fmt.Println("Failed to decode JSON")
+	}
+	fmt.Printf("The IP address of you is [ %s ]\n", raw.OriginIp)
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+	body := SourceIpResponseBody{
+		Body:   "OK",
+		IpAddr: raw.OriginIp,
+	}
+	json.NewEncoder(w).Encode(body)
+	//-> results:
+	// {
+	// 	"content": "OK",
+	// 	"address": "125.14.177.109"
+	// }
+}
+
+// // HTTP Client without types
+// func GetHttpBinResponse() {
+// 	url := "https://httpbin.org/get"
+// 	resp, err := http.Get(url)
+// 	if err != nil {
+// 		fmt.Printf("Failed to invoke URL [ %s ]\n", url)
+// 	}
+// 	defer resp.Body.Close()
+
+// 	if resp.StatusCode != http.StatusOK {
+// 		fmt.Printf("Failed to get responses. (Code: %v)\n", resp.StatusCode)
+// 	}
+
+// 	r, err := io.ReadAll(resp.Body)
+// 	if err != nil {
+// 		fmt.Println("Failed to parse response with JSON")
+// 	}
+// 	fmt.Println(r)
+// 	fmt.Println(string(r))
 // }
