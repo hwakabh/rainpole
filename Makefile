@@ -15,6 +15,11 @@ build: ## Compile single binary for rainpole app
 db: ## Create database for rainpole app
 	@scripts/initdb.sh
 
+validate: ## Validate HashiCorp Packer templates
+	@echo "Checking Packer templates ..."
+	@packer init .
+	@packer validate .
+
 help: ## Print this help
 	@echo 'Usage: make [target]'
 	@echo ''

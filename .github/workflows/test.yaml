@@ -22,7 +22,7 @@ jobs:
           go-version-file: './go.mod'
 
       - name: Setup Test Database and build app
-        run: "make db"
+        run: "make db && make build"
 
       - name: Run Tests
         run: "go test -v"
@@ -32,8 +32,5 @@ jobs:
         with:
           version: ${{ env.PRODUCT_VERSION }}
 
-      - name: Initialize packer
-        run: "packer init ./image.pkr.hcl"
-
-      - name: Run `packer validate`
-        run: "packer validate ./image.pkr.hcl"
+      - name: Initialize and validate Packer
+        run: "make validate"
