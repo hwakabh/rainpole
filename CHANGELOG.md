@@ -1,5 +1,36 @@
 # Changelog
 
+## [0.3.0](https://github.com/hwakabh/rainpole/compare/v0.2.0...v0.3.0) (2025-03-10)
+
+
+### Features
+
+* enabled to fetch fixtured data from SQLite3 database. ([d58232c](https://github.com/hwakabh/rainpole/commit/d58232cf0c145ce597a89978b19b55f7d64831e8))
+
+
+### Bug Fixes
+
+* **ci:** error access with test database. ([5f9cd68](https://github.com/hwakabh/rainpole/commit/5f9cd68411cf441de383a858ce25aa38e4c7a23e))
+* **ci:** error access with test database. ([77c06b8](https://github.com/hwakabh/rainpole/commit/77c06b886563880248b1c563c4165353d25f542b))
+
+
+### Documentation
+
+* **build:** replaced commands with make. ([245f01a](https://github.com/hwakabh/rainpole/commit/245f01a4e439319f8416c147f99f52c8e51c0e29))
+
+
+### Miscellaneous Chores
+
+* added initial snippets to create clean database. ([504c005](https://github.com/hwakabh/rainpole/commit/504c0056d62e6a5909954f0d94e1c5d1fc61334b))
+* **deps:** update dependency go to v1.24.1 ([06a3e1d](https://github.com/hwakabh/rainpole/commit/06a3e1df6ccd80e9537c22c3e6782972bec6bb29))
+* renamed asstes directory from web to public. ([d4afe5a](https://github.com/hwakabh/rainpole/commit/d4afe5a1ea7448c04f16368b65bb913af16ad872))
+
+
+### Code Refactoring
+
+* **build:** replaced scripts with Makefile. ([169033d](https://github.com/hwakabh/rainpole/commit/169033db1a9b1056532a67d850907821d62902a1))
+* **build:** updated Makefile. ([ba6c193](https://github.com/hwakabh/rainpole/commit/ba6c1932af520947fa49fd073c065518871a63e8))
+
 ## [0.2.0](https://github.com/hwakabh/rainpole/compare/v0.1.0...v0.2.0) (2025-02-27)
 
 
