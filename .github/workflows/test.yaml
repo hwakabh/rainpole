@@ -21,8 +21,9 @@ jobs:
         with:
           go-version-file: './go.mod'
 
-      - name: Build Testing
-        run: "GOOS=linux GOARCH=amd64 go build -v -o ./cmd/rainpole"
+      - name: Setup Test Database and build app
+        run: |
+          /bin/bash -c "scripts/initdb.sh && scripts/build.sh"
 
       - name: Run Tests
         run: go test -v
