@@ -30,18 +30,15 @@ jobs:
           go-version-file: 'go.mod'
 
       - name: Build application with single binary
-        run: "GOOS=linux GOARCH=amd64 go build -o ./cmd/rainpole"
+        run: "make build"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
         with:
           version: ${{ env.PRODUCT_VERSION }}
 
-      - name: Initialize packer
-        run: "packer init ./image.pkr.hcl"
-
-      - name: Run `packer validate`
-        run: "packer validate ./image.pkr.hcl"
+      - name: Initialize and validate Packer
+        run: "make validate"
 
       - name: Build distroless image and push
         id: push

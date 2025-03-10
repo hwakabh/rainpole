@@ -15,25 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup
+      - name: Setup Go
         uses: actions/setup-go@v5
         # https://github.com/actions/setup-go
         with:
           go-version-file: './go.mod'
 
-      - name: Build Testing
-        run: "GOOS=linux GOARCH=amd64 go build -v -o ./cmd/rainpole"
+      - name: Setup Test Database and build app
+        run: "make db && make build"
 
       - name: Run Tests
-        run: go test -v
+        run: "go test -v"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
         with:
           version: ${{ env.PRODUCT_VERSION }}
 
-      - name: Initialize packer
-        run: "packer init ./image.pkr.hcl"
-
-      - name: Run `packer validate`
-        run: "packer validate ./image.pkr.hcl"
+      - name: Initialize and validate Packer
+        run: "make validate"
