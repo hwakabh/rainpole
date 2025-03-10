@@ -15,18 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup
+      - name: Setup Go
         uses: actions/setup-go@v5
         # https://github.com/actions/setup-go
         with:
           go-version-file: './go.mod'
 
       - name: Setup Test Database and build app
-        run: |
-          /bin/sh -c "scripts/initdb.sh && scripts/build.sh"
+        run: "make db"
 
       - name: Run Tests
-        run: go test -v
+        run: "go test -v"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
