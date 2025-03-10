@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -11,6 +12,13 @@ type RootResponse struct {
 }
 
 func main() {
+	// Fetch value from envar, and the zero-value of string is ""
+	port := os.Getenv("PORT")
+	if port == "" {
+		fmt.Println("Failed to fetch envar with PORT, using default tcp/8080 ...")
+		port = "8080"
+	}
+
 	fmt.Println("Starting web server ...")
 	// Instantiate multiplexer
 	mux := http.NewServeMux()
@@ -26,14 +34,13 @@ func main() {
 	// REST-APIs endpoints
 	mux.HandleFunc("/api/v1/", RestRoute)
 	mux.HandleFunc("/api/v1/uuid", GetRandomUuid)
-	// mux.HandleFunc("/api/v1/companies", GetCompany)
 
 	// GraphQL endpoints
 	mux.HandleFunc("/graphql", GraphqlRoute)
 
 	// Using struct in net/http with instantiated multiplexer
 	server := http.Server{
-		Addr:           ":8080",
+		Addr:           ":" + port,
 		Handler:        mux,
 		ReadTimeout:    30 * time.Second,
 		WriteTimeout:   30 * time.Second,
