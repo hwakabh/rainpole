@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 // Nested slice
@@ -13,15 +14,21 @@ type Company struct {
 	Year     int      `json:"year"`
 }
 
-func GetAllCompanies(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(">>> Getting all Companies...")
-
-	companies := []Company{
+// With Go, we can not define slice/array/map as const
+// meaning it will be errored with "const companies []Company = []Company{...}"
+func GetCompanyList() []Company {
+	c := []Company{
 		{Name: "Google", Founders: []string{"Larry Page", "Sergey Brin"}, Year: 1998},
 		{Name: "Amazon", Founders: []string{"Jeff Bezos"}, Year: 1995},
 		{Name: "Facebook", Founders: []string{"Mark Zuckerberg"}, Year: 2004},
 		{Name: "Apple", Founders: []string{"Steve Jobs", "Steve Wozniak", "Ronald Wayne"}, Year: 2004},
 	}
+	return c
+}
+
+func GetAllCompanies(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(">>> Getting all Companies...")
+	companies := GetCompanyList()
 
 	for i, v := range companies {
 		fmt.Println(i, v.Name)
@@ -32,6 +39,26 @@ func GetAllCompanies(w http.ResponseWriter, r *http.Request) {
 	GetEstablishedHYear()
 
 	json.NewEncoder(w).Encode(companies)
+}
+
+func GetCompany(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println(r)
+	fmt.Printf("The id of company: [ %s ]\n", r.PathValue("id"))
+
+	// Fetch company_id from URL path params with string, and cast it to int
+	i, _ := strconv.Atoi(r.PathValue("id"))
+
+	companies := GetCompanyList()
+
+	if len(companies)-1 < i {
+		fmt.Printf("company_id [ %v ] is invalid \n", i)
+		// returning "null" in response
+		json.NewEncoder(w).Encode(nil)
+	} else {
+		resp := companies[i]
+		json.NewEncoder(w).Encode(resp)
+	}
+
 }
 
 // implementations of enum
