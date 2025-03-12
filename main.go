@@ -35,8 +35,8 @@ func main() {
 	mux.HandleFunc("/api/v1/", RestRoute)
 	mux.HandleFunc("/api/v1/ip", GetSourceIpAddress)
 	mux.HandleFunc("/api/v1/uuid", GetRandomUuid)
-	mux.HandleFunc("/api/v1/companies", GetAllCompanies)
-	mux.HandleFunc("/api/v1/companies/{id}", GetCompany)
+	mux.HandleFunc("/api/v1/companies", MultipleCompanyHandler)
+	mux.HandleFunc("/api/v1/companies/{id}", SingleCompanyHandler)
 
 	// GraphQL endpoints
 	mux.HandleFunc("/graphql", GraphqlRoute)

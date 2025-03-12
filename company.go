@@ -16,6 +16,7 @@ type Company struct {
 
 // With Go, we can not define slice/array/map as const
 // meaning it will be errored with "const companies []Company = []Company{...}"
+// https://stackoverflow.com/a/41289218
 func GetCompanyList() []Company {
 	c := []Company{
 		{Name: "Google", Founders: []string{"Larry Page", "Sergey Brin"}, Year: 1998},
@@ -26,7 +27,60 @@ func GetCompanyList() []Company {
 	return c
 }
 
-func GetAllCompanies(w http.ResponseWriter, r *http.Request) {
+// Allowing only GET/POST /api/v1/companies
+func MultipleCompanyHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		resp := GetAllCompanies()
+		json.NewEncoder(w).Encode(resp)
+	case http.MethodPost:
+		// TODO: Add companies
+		fmt.Println("POST company to /api/v1/companies")
+		resp := AddCompany()
+		json.NewEncoder(w).Encode(resp)
+	default:
+		fmt.Printf("Got [ %s] to /api/v1/companies, Method Not Allowed", r.Method)
+		// http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(nil)
+	}
+}
+
+// Allowing CRUDs GET/POST/PATCH/DELETE /api/v1/companies/{id}
+func SingleCompanyHandler(w http.ResponseWriter, r *http.Request) {
+	if r.PathValue("id") == "" {
+		fmt.Printf("company_id [ %s ] invalid\n", r.PathValue("id"))
+		json.NewEncoder(w).Encode(nil)
+	}
+
+	switch r.Method {
+	case http.MethodGet:
+		resp := GetCompany(r)
+		json.NewEncoder(w).Encode(resp)
+
+	case http.MethodPost:
+		// TODO: Add companies
+		fmt.Println("POST company to /api/v1/companies/{id}")
+
+	case http.MethodPatch:
+		// TODO: Update companies
+		fmt.Println("PATCH company to /api/v1/companies/{id}")
+
+	case http.MethodDelete:
+		// TODO: Delete companies
+		fmt.Println("DELETE company to /api/v1/companies/{id}")
+		w.WriteHeader(http.StatusNoContent)
+		json.NewEncoder(w).Encode(nil)
+
+	default:
+		fmt.Printf("Got [ %s] to /api/v1/companies, Method Not Allowed\n", r.Method)
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(nil)
+	}
+
+}
+
+// each CRUDs methods
+func GetAllCompanies() []Company {
 	fmt.Println(">>> Getting all Companies...")
 	companies := GetCompanyList()
 
@@ -37,28 +91,55 @@ func GetAllCompanies(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("Getting establish year of Google ...")
 	GetEstablishedHYear()
-
-	json.NewEncoder(w).Encode(companies)
+	return companies
 }
 
-func GetCompany(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println(r)
-	fmt.Printf("The id of company: [ %s ]\n", r.PathValue("id"))
-
+func GetCompany(req *http.Request) Company {
 	// Fetch company_id from URL path params with string, and cast it to int
-	i, _ := strconv.Atoi(r.PathValue("id"))
+	fmt.Printf("The id of company: [ %s ]\n", req.PathValue("id"))
+	company_id, _ := strconv.Atoi(req.PathValue("id"))
 
 	companies := GetCompanyList()
 
-	if len(companies)-1 < i {
-		fmt.Printf("company_id [ %v ] is invalid \n", i)
-		// returning "null" in response
-		json.NewEncoder(w).Encode(nil)
+	// TODO: need to validate negative values such as -1
+	if len(companies)-1 < company_id {
+		fmt.Printf("company_id [ %v ] not found\n", company_id)
+		// assign zero-values for each type
+		return Company{
+			Name:     "",
+			Founders: []string{},
+			Year:     0,
+		}
 	} else {
-		resp := companies[i]
-		json.NewEncoder(w).Encode(resp)
+		return companies[company_id-1]
 	}
+}
 
+func AddCompany() Company {
+	fmt.Println("POST request!")
+	return Company{
+		Name:     "",
+		Founders: []string{},
+		Year:     0,
+	}
+}
+
+func UpdateCompany() Company {
+	fmt.Println("PATCH request!")
+	return Company{
+		Name:     "",
+		Founders: []string{},
+		Year:     0,
+	}
+}
+
+func DeleteCompany() Company {
+	fmt.Println("DELETE request!")
+	return Company{
+		Name:     "",
+		Founders: []string{},
+		Year:     0,
+	}
 }
 
 // implementations of enum
