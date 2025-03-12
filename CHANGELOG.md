@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://github.com/hwakabh/rainpole/compare/v0.3.0...v0.4.0) (2025-03-12)
+
+
+### Features
+
+* added GET /api/v1/companies/:id endpoint. ([95fc470](https://github.com/hwakabh/rainpole/commit/95fc470289400d2d8bf05927ba04d572a0bc6cc7))
+* enabled to fetch value from envars. ([36c998d](https://github.com/hwakabh/rainpole/commit/36c998dd06661a41d989721312678b85bb46cfa0))
+* implemented base of CRUDs methods in company objects. ([af992cf](https://github.com/hwakabh/rainpole/commit/af992cf91b9947783b9beaa7f45760c7e5048889))
+* implemented GET endpoints for company objects. ([749c92c](https://github.com/hwakabh/rainpole/commit/749c92c74130d52db8dddb2a7b058b86e975a8f1))
+* implemented GET/DELETE with database. ([944e998](https://github.com/hwakabh/rainpole/commit/944e998a673d821ff0388f30490d5110022105e0))
+* implemented HTTP clients. ([a3eff61](https://github.com/hwakabh/rainpole/commit/a3eff61cdfb5f05752e3684343d6ee7784c58f90))
+
+
+### Continuous Integration
+
+* included sqlite database into binaries. ([c37ea59](https://github.com/hwakabh/rainpole/commit/c37ea59839154c53b8d5280a743bea9c33d42eba))
+
 ## [0.3.0](https://github.com/hwakabh/rainpole/compare/v0.2.0...v0.3.0) (2025-03-10)
 
 
