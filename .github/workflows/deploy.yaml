@@ -30,7 +30,7 @@ jobs:
           go-version-file: 'go.mod'
 
       - name: Build application with single binary
-        run: "make build"
+        run: "make db && make build"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main
