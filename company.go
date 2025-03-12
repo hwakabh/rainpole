@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -9,6 +10,7 @@ import (
 
 // Nested slice
 type Company struct {
+	Id       int      `json:"id"`
 	Name     string   `json:"name"`
 	Founders []string `json:"founders"`
 	Year     int      `json:"year"`
@@ -19,10 +21,10 @@ type Company struct {
 // https://stackoverflow.com/a/41289218
 func GetCompanyList() []Company {
 	c := []Company{
-		{Name: "Google", Founders: []string{"Larry Page", "Sergey Brin"}, Year: 1998},
-		{Name: "Amazon", Founders: []string{"Jeff Bezos"}, Year: 1995},
-		{Name: "Facebook", Founders: []string{"Mark Zuckerberg"}, Year: 2004},
-		{Name: "Apple", Founders: []string{"Steve Jobs", "Steve Wozniak", "Ronald Wayne"}, Year: 2004},
+		{Id: 1, Name: "Google", Founders: []string{"Larry Page", "Sergey Brin"}, Year: 1998},
+		{Id: 2, Name: "Amazon", Founders: []string{"Jeff Bezos"}, Year: 1995},
+		{Id: 3, Name: "Facebook", Founders: []string{"Mark Zuckerberg"}, Year: 2004},
+		{Id: 4, Name: "Apple", Founders: []string{"Steve Jobs", "Steve Wozniak", "Ronald Wayne"}, Year: 2004},
 	}
 	return c
 }
@@ -68,8 +70,15 @@ func SingleCompanyHandler(w http.ResponseWriter, r *http.Request) {
 	case http.MethodDelete:
 		// TODO: Delete companies
 		fmt.Println("DELETE company to /api/v1/companies/{id}")
-		w.WriteHeader(http.StatusNoContent)
-		json.NewEncoder(w).Encode(nil)
+		t := GetCompany(r)
+		isDeleted := DeleteCompany(t)
+		if isDeleted {
+			w.WriteHeader(http.StatusNoContent)
+			json.NewEncoder(w).Encode(nil)
+		} else {
+			fmt.Println("Failed to delete company from database records.")
+			json.NewEncoder(w).Encode(t)
+		}
 
 	default:
 		fmt.Printf("Got [ %s] to /api/v1/companies, Method Not Allowed\n", r.Method)
@@ -81,16 +90,43 @@ func SingleCompanyHandler(w http.ResponseWriter, r *http.Request) {
 
 // each CRUDs methods
 func GetAllCompanies() []Company {
-	fmt.Println(">>> Getting all Companies...")
-	companies := GetCompanyList()
-
-	for i, v := range companies {
-		fmt.Println(i, v.Name)
-		fmt.Printf("%s is founded in %v by %s\n", companies[i].Name, companies[i].Year, companies[i].Founders)
+	fmt.Println(">>> Querying all companies from database ...")
+	db, err := GetDatabaseInstance()
+	if err != nil {
+		fmt.Printf("Failed to connect %s database\n", DB_TYPE)
+		fmt.Println(err.Error())
 	}
 
-	fmt.Println("Getting establish year of Google ...")
-	GetEstablishedHYear()
+	// Run queries
+	q := "SELECT * FROM companies;"
+	rows, e := db.Query(q)
+	if e != nil {
+		fmt.Printf("Failed to execute query: [ %s ]\n", q)
+		fmt.Println(e)
+	}
+
+	// iterate and build response body
+	var companies []Company
+	for rows.Next() {
+		// each field should be defined as variables to target table
+		var id int
+		var name string
+		var founder string
+		var year int
+		err := rows.Scan(&id, &name, &founder, &year)
+		if err != nil {
+			fmt.Printf("Failed to get record\n")
+		}
+		c := Company{
+			Id:       id,
+			Name:     name,
+			Founders: []string{founder},
+			Year:     year,
+		}
+		companies = append(companies, c)
+	}
+
+	// GetEstablishedHYear()
 	return companies
 }
 
@@ -99,20 +135,42 @@ func GetCompany(req *http.Request) Company {
 	fmt.Printf("The id of company: [ %s ]\n", req.PathValue("id"))
 	company_id, _ := strconv.Atoi(req.PathValue("id"))
 
-	companies := GetCompanyList()
-
-	// TODO: need to validate negative values such as -1
-	if len(companies)-1 < company_id {
-		fmt.Printf("company_id [ %v ] not found\n", company_id)
-		// assign zero-values for each type
+	if company_id == 0 || company_id < 0 {
+		fmt.Printf("company_id [ %v ] invalid, should provide non-negative values\n", company_id)
 		return Company{
+			Id:       0,
 			Name:     "",
 			Founders: []string{},
 			Year:     0,
 		}
-	} else {
-		return companies[company_id-1]
 	}
+
+	db, err := GetDatabaseInstance()
+	if err != nil {
+		fmt.Printf("Failed to connect %s database\n", DB_TYPE)
+		fmt.Println(err.Error())
+	}
+
+	company := db.QueryRow("SELECT * FROM `companies` WHERE id = ?;", company_id)
+	var id int
+	var name string
+	var founder string
+	var year int
+	e := company.Scan(&id, &name, &founder, &year)
+	if e != nil {
+		if e == sql.ErrNoRows {
+			fmt.Printf("Records for company_id=%v not found\n", company_id)
+		}
+		fmt.Printf("Failed to get record\n")
+	}
+
+	return Company{
+		Id:       id,
+		Name:     name,
+		Founders: []string{founder},
+		Year:     year,
+	}
+
 }
 
 func AddCompany() Company {
@@ -133,29 +191,41 @@ func UpdateCompany() Company {
 	}
 }
 
-func DeleteCompany() Company {
+func DeleteCompany(c Company) bool {
 	fmt.Println("DELETE request!")
-	return Company{
-		Name:     "",
-		Founders: []string{},
-		Year:     0,
+
+	db, err := GetDatabaseInstance()
+	if err != nil {
+		fmt.Printf("Failed to connect %s database\n", DB_TYPE)
+		fmt.Println(err.Error())
 	}
+
+	q := "DELETE FROM companies WHERE id = ?;"
+	_, e := db.Exec(q, c.Id)
+	if e != nil {
+		fmt.Printf("Failed to delete records\n")
+		fmt.Println(e)
+		return false
+	}
+
+	fmt.Printf("Deletion completed: [ %s ]\n", c.Name)
+	return true
 }
 
-// implementations of enum
-type CompanyName string
-type GAFA struct {
-	Name CompanyName
-}
+// // implementations of enum
+// type CompanyName string
+// type GAFA struct {
+// 	Name CompanyName
+// }
 
-const (
-	GOOGLE   = CompanyName("Google")
-	APPLE    = CompanyName("Apple")
-	FACEBOOK = CompanyName("Facebook")
-	AMAZON   = CompanyName("Amazon")
-)
+// const (
+// 	GOOGLE   = CompanyName("Google")
+// 	APPLE    = CompanyName("Apple")
+// 	FACEBOOK = CompanyName("Facebook")
+// 	AMAZON   = CompanyName("Amazon")
+// )
 
-func GetEstablishedHYear() {
-	gafa := GAFA{Name: GOOGLE}
-	fmt.Printf("%s is one of the companies in GAFA \n", gafa.Name)
-}
+// func GetEstablishedHYear() {
+// 	gafa := GAFA{Name: GOOGLE}
+// 	fmt.Printf("%s is one of the companies in GAFA \n", gafa.Name)
+// }
