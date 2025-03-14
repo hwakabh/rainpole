@@ -37,7 +37,6 @@ func Seed() bool {
 	}
 
 	// Initialize tables
-	// TODO: add handlings of keeping idempotence
 	table_name := "companies"
 	sql := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (id PRIMARY KEY, name, founder, year);", table_name)
 	_, e := db.Exec(sql)
@@ -47,14 +46,28 @@ func Seed() bool {
 		return false
 	}
 
-	// Get seed data and insert
-	seeds := GetCompanyList()
-	q := fmt.Sprintf("INSERT INTO `%s` VALUES (?, ?, ?, ?);\n", table_name)
-	for _, s := range seeds {
-		_, err := db.Exec(q, s.Id, s.Name, s.Founders[0], s.Year)
-		if err != nil {
-			fmt.Println("Failed to exec INSERT.")
-			fmt.Println(err)
+	// Check data duplications
+	var n int
+	er := db.QueryRow(fmt.Sprintf("SELECT count(*) FROM %s;", table_name)).Scan(&n)
+	if er != nil {
+		fmt.Println("Failed to get number of records")
+		fmt.Println(er)
+		return false
+	}
+
+	if n != 0 {
+		fmt.Printf("Some data already exists in [ %s ] table, skipped\n", table_name)
+	} else {
+		// Get seed data and insert after the check
+		seeds := GetCompanyList()
+
+		q := fmt.Sprintf("INSERT INTO `%s` VALUES (?, ?, ?, ?);\n", table_name)
+		for _, s := range seeds {
+			_, err := db.Exec(q, s.Id, s.Name, s.Founders[0], s.Year)
+			if err != nil {
+				fmt.Println("Failed to exec INSERT.")
+				fmt.Println(err)
+			}
 		}
 	}
 
