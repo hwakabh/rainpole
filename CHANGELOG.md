@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/hwakabh/rainpole/compare/v0.4.0...v0.4.1) (2025-03-14)
+
+
+### Bug Fixes
+
+* added validations for data duplications. ([416d515](https://github.com/hwakabh/rainpole/commit/416d515bc900d940bf7b810162e5665b8a5220f0))
+
 ## [0.4.0](https://github.com/hwakabh/rainpole/compare/v0.3.0...v0.4.0) (2025-03-12)
 
 
