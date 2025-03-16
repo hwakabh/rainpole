@@ -12,9 +12,6 @@ build: ## Compile single binary for rainpole app
 	@echo "Compiling single binary for rainple application ..."
 	@GOOS=linux GOARCH=amd64 go build -o ${COMPILED_FILEPATH} .
 
-db: ## Create database for rainpole app
-	@scripts/initdb.sh
-
 validate: ## Validate HashiCorp Packer templates
 	@echo "Checking Packer templates ..."
 	@packer init .
