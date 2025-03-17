@@ -19,12 +19,19 @@ func main() {
 		port = "8080"
 	}
 
-	fmt.Println("Initializing database ...")
-	if ret := Seed(); ret != true {
-		fmt.Println("Failed to initialize database")
+	fmt.Println(">>> Initialize database ...")
+	if ret := InitializeDatabase(); ret != true {
+		fmt.Println("Failed to complete InitializeDatabase() with database")
+		os.Exit(1)
 	}
 
-	fmt.Println("Starting web server ...")
+	fmt.Println(">>> Loading fixture data for companies into database ...")
+	if ret := Seed(); ret != true {
+		fmt.Println("Failed to complete Seed() with database")
+		os.Exit(1)
+	}
+
+	fmt.Println(">>> Starting web server ...")
 	// Instantiate multiplexer
 	mux := http.NewServeMux()
 

@@ -22,7 +22,7 @@ jobs:
           go-version-file: './go.mod'
 
       - name: Setup Test Database and build app
-        run: "make db && make build"
+        run: "make build"
 
       - name: Run Tests
         run: "go test -v"
