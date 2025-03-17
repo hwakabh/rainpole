@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.1](https://github.com/hwakabh/rainpole/compare/v0.4.0...v0.4.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* added validations for data duplications. ([416d515](https://github.com/hwakabh/rainpole/commit/416d515bc900d940bf7b810162e5665b8a5220f0))
+
+
+### Code Refactoring
+
+* implemented database initialization with Go. ([02cf141](https://github.com/hwakabh/rainpole/commit/02cf14127b4a8a540312dbba5b484a9e9cb61533))
+
+
+### Build System
+
+* refactor with removing make db. ([795686a](https://github.com/hwakabh/rainpole/commit/795686a451274c826f36bab4fd38739377fc29b3))
+
 ## [0.4.0](https://github.com/hwakabh/rainpole/compare/v0.3.0...v0.4.0) (2025-03-12)
 
 
