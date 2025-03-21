@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/hwakabh/rainpole/compare/v0.4.1...v0.5.0) (2025-03-21)
+
+
+### Features
+
+* added POST logics with parsing request body and adding records. ([7fe0f9f](https://github.com/hwakabh/rainpole/commit/7fe0f9f0a419136e3214963a662fd648adec1842))
+
 ## [0.4.1](https://github.com/hwakabh/rainpole/compare/v0.4.0...v0.4.1) (2025-03-17)
 
 
