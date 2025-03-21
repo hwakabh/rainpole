@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sort"
 	"strconv"
 )
 
 // Nested slice
 type Company struct {
-	Id       int      `json:"id"`
+	Id       int      `json:"id,omitempty"`
 	Name     string   `json:"name"`
 	Founders []string `json:"founders"`
 	Year     int      `json:"year"`
@@ -36,10 +37,14 @@ func MultipleCompanyHandler(w http.ResponseWriter, r *http.Request) {
 		resp := GetAllCompanies()
 		json.NewEncoder(w).Encode(resp)
 	case http.MethodPost:
-		// TODO: Add companies
-		fmt.Println("POST company to /api/v1/companies")
-		resp := AddCompany()
-		json.NewEncoder(w).Encode(resp)
+		resp, isCreated := AddCompany(r)
+		if isCreated {
+			json.NewEncoder(w).Encode(resp)
+		} else {
+			fmt.Println("Failed to create company into database records.")
+			json.NewEncoder(w).Encode(nil)
+		}
+
 	default:
 		fmt.Printf("Got [ %s] to /api/v1/companies, Method Not Allowed", r.Method)
 		// http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -60,8 +65,8 @@ func SingleCompanyHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resp)
 
 	case http.MethodPost:
-		// TODO: Add companies
-		fmt.Println("POST company to /api/v1/companies/{id}")
+		fmt.Println("Got POST request to /api/v1/companies/{id}, Method Not Allowed")
+		json.NewEncoder(w).Encode(nil)
 
 	case http.MethodPatch:
 		// TODO: Update companies
@@ -173,13 +178,53 @@ func GetCompany(req *http.Request) Company {
 
 }
 
-func AddCompany() Company {
-	fmt.Println("POST request!")
-	return Company{
-		Name:     "",
-		Founders: []string{},
-		Year:     0,
+func AddCompany(req *http.Request) (Company, bool) {
+	var rbody Company
+	if err := json.NewDecoder(req.Body).Decode(&rbody); err != nil {
+		fmt.Println("Failed to parse POST request")
+		fmt.Println(err)
+		return rbody, false
 	}
+	fmt.Println("POST request, got: ")
+	fmt.Println(rbody)
+
+	db, e := GetDatabaseInstance()
+	if e != nil {
+		fmt.Printf("Failed to connect %s database\n", DB_TYPE)
+		fmt.Println(e.Error())
+		return rbody, false
+	}
+
+	if rbody.Id == 0 {
+		companies := GetAllCompanies()
+		// Sort slices for calculate newest Company.Id
+		sort.SliceStable(companies, func(i int, j int) bool { return companies[i].Id < companies[j].Id })
+		rbody.Id = companies[len(companies)-1].Id + 1
+	} else {
+		q := "SELECT * FROM companies WHERE id = ?;"
+		if _, e := db.Query(q, rbody.Id); e != nil {
+			fmt.Printf("Company object whose id is [ %v ] has been already existed in the database\n", rbody.Id)
+			fmt.Println(e)
+		}
+		return rbody, false
+	}
+
+	fmt.Println(rbody)
+
+	_, err := db.Exec(
+		"INSERT INTO companies (id, name, founder, year) VALUES (?, ?, ?, ?)",
+		rbody.Id,
+		rbody.Name,
+		rbody.Founders[0],
+		rbody.Year,
+	)
+	if err != nil {
+		fmt.Println("Failed to INSERT data into database")
+		fmt.Println(err)
+		return rbody, false
+	}
+
+	return rbody, true
 }
 
 func UpdateCompany() Company {
