@@ -28,5 +28,8 @@ jobs:
         with:
           go-version-file: './go.mod'
 
-      - name: Build application with single binary
-        run: "make build"
+      - name: Setup ko for Go Container app
+        uses: ko-build/setup-ko@v0.8
+
+      - name: Build Go application with ko
+        run: ko build -L .
