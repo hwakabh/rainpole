@@ -4,27 +4,16 @@ import (
 	"database/sql"
 	"fmt"
 	"os"
-	"os/exec"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 const DB_TYPE string = "sqlite3"
 const DB_URL string = "./sqlite3.db"
-const SQL_FILEPATH string = "./scripts/seeds.sql"
 
 func InitializeDatabase() bool {
 
-	fmt.Println(">>> Checking if sqlite3 commands installed ...")
-	e := exec.Command("which", "sqlite3").Run()
-	if e != nil {
-		fmt.Println("sqlite3 commands not found, please install it first.")
-		return false
-	} else {
-		fmt.Println("OK")
-	}
-
-	fmt.Println(">>> Checking SQLite3 database exists ...")
+	fmt.Println(">>> Checking SQLite3 database file exists ...")
 	// os.Stat() returns nil when the file is there
 	_, err := os.Stat(DB_URL)
 	if err != nil {
@@ -41,16 +30,6 @@ func InitializeDatabase() bool {
 			fmt.Printf("Failed to clean up %s\n", DB_URL)
 			return false
 		}
-	}
-	fmt.Println("OK")
-
-	fmt.Println(">>> Loading initital data ...")
-	cmdstring := fmt.Sprintf("sqlite3 %s < %s", DB_URL, SQL_FILEPATH)
-	out, err := exec.Command("sh", "-c", cmdstring).Output()
-	if err != nil {
-		fmt.Printf("Failed to run command [ %s ], errors: \n", cmdstring)
-		fmt.Println(out)
-		return false
 	}
 	fmt.Println("OK")
 	return true
