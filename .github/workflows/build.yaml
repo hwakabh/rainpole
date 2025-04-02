@@ -30,11 +30,3 @@ jobs:
 
       - name: Build application with single binary
         run: "make build"
-
-      - name: Setup Packer
-        uses: hashicorp/setup-packer@main
-        with:
-          version: ${{ env.PRODUCT_VERSION }}
-
-      - name: Initialize and validate Packer
-        run: "make validate"
