@@ -12,11 +12,6 @@ build: ## Compile single binary for rainpole app
 	@echo "Compiling single binary for rainple application ..."
 	@GOOS=linux GOARCH=amd64 go build -o ${COMPILED_FILEPATH} .
 
-validate: ## Validate HashiCorp Packer templates
-	@echo "Checking Packer templates ..."
-	@packer init .
-	@packer validate .
-
 help: ## Print this help
 	@echo 'Usage: make [target]'
 	@echo ''

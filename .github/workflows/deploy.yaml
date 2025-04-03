@@ -32,22 +32,13 @@ jobs:
       - name: Build application with single binary
         run: "make build"
 
-      - name: Setup Packer
-        uses: hashicorp/setup-packer@main
-        with:
-          version: ${{ env.PRODUCT_VERSION }}
-
-      - name: Initialize and validate Packer
-        run: "make validate"
-
-      - name: Build distroless image and push
-        id: push
-        env:
-          GHCR_PUSH_PAT: ${{ secrets.GHCR_PUSH_PAT }}
-        run: |
-          packer build -color=false -on-error=abort ./image.pkr.hcl
-          echo "calverTag=$(cat manifest.json |jq -r '.builds[].custom_data.image_tag')" >> $GITHUB_OUTPUT
-
+      # - name: Build distroless image and push
+      #   id: push
+      #   env:
+      #     GHCR_PUSH_PAT: ${{ secrets.GHCR_PUSH_PAT }}
+      #   run: |
+      #     packer build -color=false -on-error=abort ./image.pkr.hcl
+      #     echo "calverTag=$(cat manifest.json |jq -r '.builds[].custom_data.image_tag')" >> $GITHUB_OUTPUT
 
       # https://github.com/google-github-actions/auth
       - name: Auth with Google Cloud

@@ -27,10 +27,8 @@ jobs:
       - name: Run Tests
         run: "go test -v"
 
-      - name: Setup Packer
-        uses: hashicorp/setup-packer@main
-        with:
-          version: ${{ env.PRODUCT_VERSION }}
+      - name: Setup ko for Go Container app
+        uses: ko-build/setup-ko@v0.8
 
-      - name: Initialize and validate Packer
-        run: "make validate"
+      - name: Build app locally for container image
+        run: ko build -L .
