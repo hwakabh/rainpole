@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.5.1](https://github.com/hwakabh/rainpole/compare/v0.5.0...v0.5.1) (2025-04-03)
+
+
+### Bug Fixes
+
+* removed logics to seed with sqlite3 commands. ([7ff2e15](https://github.com/hwakabh/rainpole/commit/7ff2e159f20e709f5b18e01b4fb4142e9a13467d))
+
+
+### Documentation
+
+* removed commands for database initializations. ([27eed0c](https://github.com/hwakabh/rainpole/commit/27eed0caf4d1370c616d902ffce055ce872ecb99))
+
+
+### Miscellaneous Chores
+
+* **ci:** fixed ko-cli installed. ([711f16f](https://github.com/hwakabh/rainpole/commit/711f16fc961a0ab282446eaa7a21a1e45281a120))
+* removed packer-releated files. ([cbfd1f9](https://github.com/hwakabh/rainpole/commit/cbfd1f9dc36e6c6f62fb087ba062a49eebb052be))
+
+
+### Continuous Integration
+
+* updated workflows from packer to ko. ([97497c9](https://github.com/hwakabh/rainpole/commit/97497c94baf5dd31e627f26ade5a9c6db965f0f2))
+
 ## [0.5.0](https://github.com/hwakabh/rainpole/compare/v0.4.1...v0.5.0) (2025-03-21)
 
 
