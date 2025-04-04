@@ -37,7 +37,7 @@ jobs:
           KO_DOCKER_REPO: ${{ env.REGISTRY }}/${{ github.actor }}
         run: |
           echo "calverTag=$(date +%Y%m%d-%H%M%S)" >> $GITHUB_OUTPUT
-          ko login ${{ env.REGISTRY }} --username ${{ github.actor }} --password ${{ secret.GHCR_PUSH_PAT }}
+          ko login ${{ env.REGISTRY }} --username ${{ github.actor }} --password ${{ secrets.GHCR_PUSH_PAT }}
           ko build -B . --sbom=none --tags=latest,${{ steps.push.outputs.calverTag }}
 
       # https://github.com/google-github-actions/auth
