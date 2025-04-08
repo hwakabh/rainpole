@@ -9,7 +9,7 @@ import (
 )
 
 const DB_TYPE string = "sqlite3"
-const DB_URL string = "./sqlite3.db"
+const DB_URL string = "/tmp/sqlite3.db"
 
 func InitializeDatabase() bool {
 

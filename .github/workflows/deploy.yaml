@@ -8,8 +8,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-  PRODUCT_VERSION: "1.11.2"
 
 jobs:
   push-and-deploy:
@@ -29,16 +27,18 @@ jobs:
         with:
           go-version-file: 'go.mod'
 
-      - name: Build application with single binary
-        run: "make build"
+      - name: Setup ko for Go Container app
+        uses: ko-build/setup-ko@v0.8
 
-      # - name: Build distroless image and push
-      #   id: push
-      #   env:
-      #     GHCR_PUSH_PAT: ${{ secrets.GHCR_PUSH_PAT }}
-      #   run: |
-      #     packer build -color=false -on-error=abort ./image.pkr.hcl
-      #     echo "calverTag=$(cat manifest.json |jq -r '.builds[].custom_data.image_tag')" >> $GITHUB_OUTPUT
+      - name: Build Go application image and push to GHCR with ko
+        id: push
+        env:
+          KO_DOCKER_REPO: ${{ env.REGISTRY }}/${{ github.actor }}
+        run: |
+          export TAG=$(date +%Y%m%d-%H%M%S)
+          echo "calverTag=$TAG" >> $GITHUB_OUTPUT
+          ko login ${{ env.REGISTRY }} --username ${{ github.actor }} --password ${{ secrets.GHCR_PUSH_PAT }}
+          ko build -B . --sbom=none --tags=latest,$TAG
 
       # https://github.com/google-github-actions/auth
       - name: Auth with Google Cloud
