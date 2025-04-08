@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.2](https://github.com/hwakabh/rainpole/compare/v0.5.1...v0.5.2) (2025-04-08)
+
+
+### Bug Fixes
+
+* **app:** updated sqlite3 file path inside container on Cloud Run. ([2cf5616](https://github.com/hwakabh/rainpole/commit/2cf5616508085890187a24f6c35cf82d5ca614f6))
+
+
+### Miscellaneous Chores
+
+* **deps:** update all non-major dependencies ([3f05ef8](https://github.com/hwakabh/rainpole/commit/3f05ef8b76ff51800835b56d77a5ace1421cf41f))
+* finalized triggers. ([e814647](https://github.com/hwakabh/rainpole/commit/e8146472d4cb924f8b613e0b057ea5c6b24dbee6))
+* removed unused envar. ([c998892](https://github.com/hwakabh/rainpole/commit/c9988923603970e8ca7b6f75837ccf4882fd0fd9))
+
+
+### Continuous Integration
+
+* added ko configs to set CGO_ENABLED=1. ([3834eb2](https://github.com/hwakabh/rainpole/commit/3834eb2a06814e66a499aa16d73b4d492ec990f8))
+* fixed typo in fetching secrets. ([74934d1](https://github.com/hwakabh/rainpole/commit/74934d1ea48d63ca6da867e38a3bc33aa6d8303c))
+* fixed variable extractions. ([ed1c03d](https://github.com/hwakabh/rainpole/commit/ed1c03dcd8c6441be30bb0f09431ba1f40384483))
+* replaced build-and-push process with ko. ([a2370fa](https://github.com/hwakabh/rainpole/commit/a2370fa24f8c58029e378b2dd84c1f65760d512a))
+
 ## [0.5.1](https://github.com/hwakabh/rainpole/compare/v0.5.0...v0.5.1) (2025-04-03)
 
 
