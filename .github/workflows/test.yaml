@@ -28,7 +28,7 @@ jobs:
         run: "go test -v"
 
       - name: Setup ko for Go Container app
-        uses: ko-build/setup-ko@v0.8
+        uses: ko-build/setup-ko@v0.9
 
       - name: Build app locally for container image
         run: ko build -L .
