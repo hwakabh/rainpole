@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/hwakabh/rainpole/compare/v0.5.2...v0.5.3) (2025-04-15)
+
+
+### Miscellaneous Chores
+
+* **deps:** update ko-build/setup-ko action to v0.9 ([ac198ca](https://github.com/hwakabh/rainpole/commit/ac198ca0a48ece0729c657c1101e9babd5f3824a))
+
 ## [0.5.2](https://github.com/hwakabh/rainpole/compare/v0.5.1...v0.5.2) (2025-04-08)
 
 
