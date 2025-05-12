@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.5](https://github.com/hwakabh/rainpole/compare/v0.5.4...v0.5.5) (2025-05-12)
+
+
+### Bug Fixes
+
+* **ci:** suppressed invalid trigger warnings on assign-auther. ([0f345e3](https://github.com/hwakabh/rainpole/commit/0f345e3a75e9cecf49f65bce8c46fe12fcedf38b))
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency go to v1.24.3 ([d32edbc](https://github.com/hwakabh/rainpole/commit/d32edbc92b5e4c18eed637d166cb63d7b7d3f32b))
+
 ## [0.5.4](https://github.com/hwakabh/rainpole/compare/v0.5.3...v0.5.4) (2025-04-21)
 
 
