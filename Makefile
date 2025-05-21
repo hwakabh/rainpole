@@ -12,6 +12,10 @@ build: ## Compile single binary for rainpole app
 	@echo "Compiling single binary for rainple application ..."
 	@GOOS=linux GOARCH=amd64 go build -o ${COMPILED_FILEPATH} .
 
+test: ## Run unittest
+	@echo "Run Go test ..."
+	@go test -v
+
 help: ## Print this help
 	@echo 'Usage: make [target]'
 	@echo ''
