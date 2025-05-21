@@ -69,11 +69,17 @@ func SingleCompanyHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(nil)
 
 	case http.MethodPatch:
-		// TODO: Update companies
 		fmt.Println("PATCH company to /api/v1/companies/{id}")
+		resp, isUpdated := UpdateCompany(r)
+		if isUpdated {
+			w.WriteHeader(http.StatusAccepted)
+			json.NewEncoder(w).Encode(resp)
+		} else {
+			fmt.Println("Failed to update company from database records.")
+			json.NewEncoder(w).Encode(nil)
+		}
 
 	case http.MethodDelete:
-		// TODO: Delete companies
 		fmt.Println("DELETE company to /api/v1/companies/{id}")
 		t := GetCompany(r)
 		isDeleted := DeleteCompany(t)
@@ -209,8 +215,6 @@ func AddCompany(req *http.Request) (Company, bool) {
 		return rbody, false
 	}
 
-	fmt.Println(rbody)
-
 	_, err := db.Exec(
 		"INSERT INTO companies (id, name, founder, year) VALUES (?, ?, ?, ?)",
 		rbody.Id,
@@ -227,13 +231,46 @@ func AddCompany(req *http.Request) (Company, bool) {
 	return rbody, true
 }
 
-func UpdateCompany() Company {
-	fmt.Println("PATCH request!")
-	return Company{
-		Name:     "",
-		Founders: []string{},
-		Year:     0,
+func UpdateCompany(req *http.Request) (Company, bool) {
+	var rbody Company
+	var company_id int
+	if err := json.NewDecoder(req.Body).Decode(&rbody); err != nil {
+		fmt.Println("Failed to parse PATCH request")
+		fmt.Println(err)
+		return rbody, false
 	}
+	_, csterr := fmt.Sscanf(req.PathValue("id"), "%d", &company_id)
+	if csterr != nil {
+		fmt.Println("Failed to convert company_id as int.")
+		fmt.Println(csterr)
+		return rbody, false
+	}
+
+	fmt.Printf("PATCH request to id = %d, got: ", company_id)
+	fmt.Println(rbody)
+
+	db, err := GetDatabaseInstance()
+	if err != nil {
+		fmt.Printf("Failed to connect %s database\n", DB_TYPE)
+		fmt.Println(err.Error())
+		return rbody, false
+	}
+
+	q := "UPDATE companies SET name = ?, founder = ?, year = ? WHERE id = ?;"
+	_, e := db.Exec(
+		q,
+		rbody.Name,
+		rbody.Founders[0],
+		rbody.Year,
+		company_id,
+	)
+	if e != nil {
+		fmt.Printf("Failed to update records\n")
+		fmt.Println(e)
+		return rbody, false
+	}
+
+	return rbody, true
 }
 
 func DeleteCompany(c Company) bool {
