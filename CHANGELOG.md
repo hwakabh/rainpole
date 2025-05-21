@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/hwakabh/rainpole/compare/v0.5.5...v0.6.0) (2025-05-21)
+
+
+### Features
+
+* added UPDATE for companies object. ([85a6642](https://github.com/hwakabh/rainpole/commit/85a66427d13c6f44a46858f30838a82615c0bc73))
+
+
+### Miscellaneous Chores
+
+* **deps:** added make test target. ([8120cd4](https://github.com/hwakabh/rainpole/commit/8120cd4c766eee622153c52cf68eef0453145b89))
+
 ## [0.5.5](https://github.com/hwakabh/rainpole/compare/v0.5.4...v0.5.5) (2025-05-12)
 
 
