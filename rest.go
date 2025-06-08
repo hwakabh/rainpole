@@ -78,8 +78,8 @@ func RestRoute(w http.ResponseWriter, r *http.Request) {
 	resp := RestResponse{
 		Body: "API root!",
 	}
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(resp)
 }
 
@@ -94,8 +94,8 @@ func GetRandomUuid(w http.ResponseWriter, r *http.Request) {
 	resp := RestResponse{
 		Body: string(random_uuid),
 	}
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(resp)
 }
 
@@ -133,8 +133,8 @@ func GetSourceIpAddress(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Printf("The IP address of you is [ %s ]\n", raw.OriginIp)
 
-	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
 
 	body := SourceIpResponseBody{
 		Body:   "OK",
