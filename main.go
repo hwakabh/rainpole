@@ -36,8 +36,8 @@ func main() {
 	mux := http.NewServeMux()
 
 	// --- Register mappings between URLs and handler
-	// static fle
-	mux.Handle("/", FetchHtmlFileServer())
+	// static files
+	mux.Handle("/", http.StripPrefix("/public", FetchHtmlFileServer()))
 	// health check
 	mux.HandleFunc("/health", HealthCheckRoute)
 	// REST-APIs endpoints
