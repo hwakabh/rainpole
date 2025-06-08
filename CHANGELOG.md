@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.7.0](https://github.com/hwakabh/rainpole/compare/v0.6.0...v0.7.0) (2025-06-08)
+
+
+### Features
+
+* added endpoint to fetch dotfiles. ([0ce616b](https://github.com/hwakabh/rainpole/commit/0ce616bdec6a790746e2613a020c172ce68b3d16))
+* added endpoint to return API versions from file. ([5d2b7cb](https://github.com/hwakabh/rainpole/commit/5d2b7cb2762559de702d58c9a1cba2fa727496ed))
+
+
+### Bug Fixes
+
+* **api:** applied to response header with proper orders. ([80b595e](https://github.com/hwakabh/rainpole/commit/80b595e6eee0dde4fd24e26965668cc3a0b3efe6))
+* inclued public/ with embed. ([f16d99a](https://github.com/hwakabh/rainpole/commit/f16d99a4ebcbac2aa8c79a5d9f2a2d8c45633946))
+
+
+### Miscellaneous Chores
+
+* fixed static file contents. ([53cb126](https://github.com/hwakabh/rainpole/commit/53cb126c851acc812b583bbfc65bd446750a369c))
+
+
+### Code Refactoring
+
+* simplified fuction to fetch http.FileServer. ([e970e6f](https://github.com/hwakabh/rainpole/commit/e970e6f8ce38934500129c1fecf9efcbdb66cad5))
+
 ## [0.6.0](https://github.com/hwakabh/rainpole/compare/v0.5.5...v0.6.0) (2025-05-21)
 
 
