@@ -40,6 +40,7 @@ func main() {
 	mux.Handle("/", http.StripPrefix("/public", FetchHtmlFileServer()))
 	// health check
 	mux.HandleFunc("/health", HealthCheckRoute)
+	mux.HandleFunc("/version", GetVersion)
 	// REST-APIs endpoints
 	mux.HandleFunc("/api/v1/", RestRoute)
 	mux.HandleFunc("/api/v1/ip", GetSourceIpAddress)
