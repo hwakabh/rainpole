@@ -36,13 +36,10 @@ func main() {
 	mux := http.NewServeMux()
 
 	// --- Register mappings between URLs and handler
-	// load staticfiles
-	fileServer := http.FileServer(http.Dir("./public"))
-	mux.Handle("/", http.StripPrefix("/", fileServer))
-
+	// static fle
+	mux.Handle("/", FetchHtmlFileServer())
 	// health check
 	mux.HandleFunc("/health", HealthCheckRoute)
-
 	// REST-APIs endpoints
 	mux.HandleFunc("/api/v1/", RestRoute)
 	mux.HandleFunc("/api/v1/ip", GetSourceIpAddress)
