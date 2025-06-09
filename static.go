@@ -16,9 +16,9 @@ func FetchHtmlFileServer() http.Handler {
 	// load staticfiles
 	public, err := fs.Sub(publicDir, "public")
 	if err != nil {
-		os.Exit(1)
 		fmt.Println("Failed to load static file")
 		fmt.Println(err)
+		os.Exit(1)
 	}
 	return http.FileServer(http.FS(public))
 }
