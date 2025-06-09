@@ -74,6 +74,15 @@ func GenerateRandomUuid() UUID {
 	return UUID(gen_uuid)
 }
 
+func TopRoute(w http.ResponseWriter, r *http.Request) {
+	resp := RestResponse{
+		Body: "Hello, Developer!",
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(resp)
+}
+
 func RestRoute(w http.ResponseWriter, r *http.Request) {
 	resp := RestResponse{
 		Body: "API root!",

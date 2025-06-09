@@ -37,8 +37,9 @@ func main() {
 
 	// --- Register mappings between URLs and handler
 	// static files
-	mux.Handle("/", http.StripPrefix("/public", FetchHtmlFileServer()))
+	mux.Handle("/public", http.StripPrefix("/public", FetchHtmlFileServer()))
 	// health check
+	mux.HandleFunc("/", TopRoute)
 	mux.HandleFunc("/health", HealthCheckRoute)
 	mux.HandleFunc("/version", GetVersion)
 	// REST-APIs endpoints
