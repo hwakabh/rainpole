@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.1](https://github.com/hwakabh/rainpole/compare/v0.7.0...v0.7.1) (2025-06-09)
+
+
+### Miscellaneous Chores
+
+* added root endpoint and updated routes for serving static files. ([04c92f6](https://github.com/hwakabh/rainpole/commit/04c92f6d7a0b9d250cbc158a785b09fe3b91eb52))
+* **deps:** update dependency go to v1.24.4 ([103b849](https://github.com/hwakabh/rainpole/commit/103b8491fb4c5cbd03df097743c0c1c3145e5064))
+* fixed error handlings. ([a0608b5](https://github.com/hwakabh/rainpole/commit/a0608b52bbfead042b72a745775e9d45325e5ed3))
+
 ## [0.7.0](https://github.com/hwakabh/rainpole/compare/v0.6.0...v0.7.0) (2025-06-08)
 
 
