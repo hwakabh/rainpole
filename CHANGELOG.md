@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.3](https://github.com/hwakabh/rainpole/compare/v0.7.2...v0.7.3) (2025-07-28)
+
+
+### Miscellaneous Chores
+
+* **deps:** update module github.com/mattn/go-sqlite3 to v1.14.29 ([d6b3693](https://github.com/hwakabh/rainpole/commit/d6b3693b4665362dd42dfa78fd1f16bd679ced71))
+
 ## [0.7.2](https://github.com/hwakabh/rainpole/compare/v0.7.1...v0.7.2) (2025-07-21)
 
 
