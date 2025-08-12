@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.7.4](https://github.com/hwakabh/rainpole/compare/v0.7.3...v0.7.4) (2025-08-12)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v5 ([8d60431](https://github.com/hwakabh/rainpole/commit/8d6043106bff21ef2d9da2eb0ee007d937d3ef59))
+* **deps:** update all non-major dependencies ([dad90cd](https://github.com/hwakabh/rainpole/commit/dad90cd34bb3cb02b23176131bc73feef7d09f10))
+* **deps:** update module github.com/mattn/go-sqlite3 to v1.14.31 ([6f65db6](https://github.com/hwakabh/rainpole/commit/6f65db6f1e506ab688a34d2407b1f04490ad6db6))
+
 ## [0.7.3](https://github.com/hwakabh/rainpole/compare/v0.7.2...v0.7.3) (2025-07-28)
 
 
