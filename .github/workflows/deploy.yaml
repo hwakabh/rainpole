@@ -51,7 +51,7 @@ jobs:
 
       # https://github.com/google-github-actions/deploy-cloudrun
       - name: Update Cloud Run instances with latest image digest
-        uses: 'google-github-actions/deploy-cloudrun@v2'
+        uses: 'google-github-actions/deploy-cloudrun@v3'
         with:
           image: 'us-central1-docker.pkg.dev/hwakabh-dev/ghcr/hwakabh/rainpole:${{ steps.push.outputs.calverTag }}'
           service: 'rainpole-api'
