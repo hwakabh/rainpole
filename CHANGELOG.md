@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.7.5](https://github.com/hwakabh/rainpole/compare/v0.7.4...v0.7.5) (2025-09-10)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/labeler action to v6 ([3635388](https://github.com/hwakabh/rainpole/commit/363538832ee9c12c7b14c5a7f4b7f5d1ccfdb0ae))
+* **deps:** update actions/setup-go action to v6 ([ff4541d](https://github.com/hwakabh/rainpole/commit/ff4541d16e84ce76a3bcdd686bfb063b6925ae7e))
+* **deps:** update actions/stale action to v10 ([ac29f59](https://github.com/hwakabh/rainpole/commit/ac29f5911277b767b19f308119be69a190bcd8c8))
+* **deps:** update all non-major dependencies ([b867613](https://github.com/hwakabh/rainpole/commit/b86761348a7d22aff42604fab69477aec7b4df2f))
+* **deps:** update dependency go to v1.25.1 ([0076f84](https://github.com/hwakabh/rainpole/commit/0076f84d10f6859876ad1d1da42ad9d16b4fbf44))
+* **deps:** update google-github-actions/auth action to v3 ([0f43c00](https://github.com/hwakabh/rainpole/commit/0f43c00e84d034c870fc1c2aa07084ab8276d527))
+* **deps:** update google-github-actions/deploy-cloudrun action to v3 ([908a290](https://github.com/hwakabh/rainpole/commit/908a290cf82c1bd7d08a9c7589a2a49ac4ad2791))
+
 ## [0.7.4](https://github.com/hwakabh/rainpole/compare/v0.7.3...v0.7.4) (2025-08-12)
 
 
