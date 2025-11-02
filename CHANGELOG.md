@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.7](https://github.com/hwakabh/rainpole/compare/v0.7.6...v0.7.7) (2025-11-02)
+
+
+### Miscellaneous Chores
+
+* **deps:** replace google-github-actions/release-please-action action with googleapis/release-please-action v4 ([3249a98](https://github.com/hwakabh/rainpole/commit/3249a98af235131b5a7c5e90762fd6727fafe25f))
+* **deps:** replace google-github-actions/release-please-action action with googleapis/release-please-action v4 ([553e738](https://github.com/hwakabh/rainpole/commit/553e738d74f6fcc9323d8247573da172c797c74e))
+
 ## [0.7.6](https://github.com/hwakabh/rainpole/compare/v0.7.5...v0.7.6) (2025-10-15)
 
 
