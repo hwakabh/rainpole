@@ -22,13 +22,15 @@ func GetJsonWebKeySet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		json.NewEncoder(w).Encode(nil)
 	}
+
+	modulus, exponent := GenerateKeyPair()
 	keys := []JWKS{
 		{
 			SingArgo:    "RSA",
 			UseFor:      "sig",
-			RsaModulus:  "xxxx",
-			RsaExponent: "AQAB",
-			KeyId:       "hoge",
+			RsaModulus:  modulus,
+			RsaExponent: exponent,
+			KeyId:       "1",
 			KeyArgo:     "RS256",
 		},
 	}
