@@ -29,6 +29,8 @@ type HandlerResponse struct {
 type JWTHeader struct {
 	Algorithm string `json:"alg"`
 	MediaType string `json:"typ"`
+	KeyId     string `json:"kid"`
+	JwksUrl   string `json:"jku"`
 }
 
 type JWTPayload struct {
@@ -90,6 +92,8 @@ func IssueJsonWebToken(username string) string {
 	header, _ := json.Marshal(JWTHeader{
 		Algorithm: "RS256",
 		MediaType: "JWT",
+		KeyId:     "1",
+		JwksUrl:   "http://localhost:8080/api/v1/.well-known/jwks.json",
 	})
 	h_b64 := base64.RawURLEncoding.EncodeToString(header)
 
