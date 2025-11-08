@@ -44,6 +44,7 @@ func main() {
 	mux.HandleFunc("/version", GetVersion)
 	// REST-APIs endpoints
 	mux.HandleFunc("/api/v1/", RestRoute)
+	mux.HandleFunc("/api/v1/login", AuthHandler)
 	mux.HandleFunc("/api/v1/ip", GetSourceIpAddress)
 	mux.HandleFunc("/api/v1/_gitconfig", FetchGitConfig)
 	mux.HandleFunc("/api/v1/_bashrc", FetchBashrc)
