@@ -1,8 +1,15 @@
 package main
 
 import (
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/base64"
 	"encoding/json"
+	"encoding/pem"
+	"fmt"
+	"math/big"
 	"net/http"
+	"os"
 )
 
 type JwksEndpoint struct {
@@ -18,12 +25,31 @@ type JWKS struct {
 	KeyArgo     string `json:"alg"`
 }
 
+func LoadPublicKey() *rsa.PublicKey {
+	if _, err := os.Stat("rsa.pub"); err == nil {
+		f, _ := os.ReadFile("rsa.pub")
+		pubKeyBlock, _ := pem.Decode(f)
+		pubKey, err := x509.ParsePKCS1PublicKey(pubKeyBlock.Bytes)
+		if err != nil {
+			fmt.Println(err)
+		}
+		return pubKey
+	}
+	return nil
+}
+
 func GetJsonWebKeySet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		json.NewEncoder(w).Encode(nil)
 	}
+	pub := LoadPublicKey()
+	// modulus
+	n := pub.N
+	modulus := base64.RawURLEncoding.EncodeToString(n.Bytes())
+	// exponent
+	e := pub.E
+	exponent := base64.RawURLEncoding.EncodeToString(big.NewInt(int64(e)).Bytes())
 
-	modulus, exponent := GenerateKeyPair()
 	keys := []JWKS{
 		{
 			SingArgo:    "RSA",
@@ -34,6 +60,7 @@ func GetJsonWebKeySet(w http.ResponseWriter, r *http.Request) {
 			KeyArgo:     "RS256",
 		},
 	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode((JwksEndpoint{
 		Keys: keys,
 	}))

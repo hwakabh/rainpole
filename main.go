@@ -34,6 +34,8 @@ func main() {
 	fmt.Println(">>> Starting web server ...")
 	// Instantiate multiplexer
 	mux := http.NewServeMux()
+	fmt.Println(">>> Generating private key ...")
+	GenerateKeyPair()
 
 	// --- Register mappings between URLs and handler
 	// static files
