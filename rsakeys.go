@@ -12,7 +12,7 @@ import (
 func GenerateKeyPair() {
 	// Generate private key
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
-	//-> returns https://pkg.go.dev/crypto/rsa#PublicKey
+	//-> returns https://pkg.go.dev/crypto/rsa#PrivateKey
 	if err != nil {
 		fmt.Println("Failed to generate Private Key")
 	}
@@ -33,7 +33,8 @@ func GenerateKeyPair() {
 	// Generate public key
 	fmt.Println(">>> Generating public key from private key ...")
 	publicKey := privateKey.Public()
-	//-> returns https://pkg.go.dev/crypto/rsa#PublicKey
+	//-> https://pkg.go.dev/crypto/rsa#PublicKey
+	//-> https://pkg.go.dev/crypto#PublicKey
 
 	if _, err := os.Stat("rsa.pub"); err != nil {
 		publicKeyPem := pem.EncodeToMemory(
@@ -47,10 +48,6 @@ func GenerateKeyPair() {
 			os.Exit(1)
 		}
 	}
-
-	// return privateKey, publicKey
-
-	// // should be same
 	// fmt.Printf("PrivateKey's Modulus: %s\n", privateKey.N)
 	// fmt.Printf("PrivateKey's Exponent: %d\n", privateKey.E)
 	// fmt.Printf("PublicKey's Modulus: %s\n", publicKey.(*rsa.PublicKey).N)
