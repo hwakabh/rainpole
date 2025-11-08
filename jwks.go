@@ -42,6 +42,8 @@ func GetJsonWebKeySet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		json.NewEncoder(w).Encode(nil)
 	}
+
+	fmt.Println(">>> Loading Public Key for JWKS responses ...")
 	pub := LoadPublicKey()
 	// modulus
 	n := pub.N
