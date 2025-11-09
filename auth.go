@@ -124,7 +124,7 @@ func LoadPrivateKey() *rsa.PrivateKey {
 		}
 		return privKey
 	}
-	fmt.Println("rsa.key file does not exist.")
+	fmt.Printf("private key file (%s) does not exist.\n", PRIVATE_KEY_PATH)
 	return nil
 }
 
