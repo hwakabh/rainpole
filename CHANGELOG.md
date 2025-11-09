@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.8.0](https://github.com/hwakabh/rainpole/compare/v0.7.7...v0.8.0) (2025-11-09)
+
+
+### Features
+
+* implementation JTW and JWKS endpoint ([#95](https://github.com/hwakabh/rainpole/issues/95)) ([1c4aa1e](https://github.com/hwakabh/rainpole/commit/1c4aa1e9fb009221cbba1138acca0b923ad9a4c9))
+
+
+### Bug Fixes
+
+* **auth:** export path of RSA keypair with organizing const. ([#98](https://github.com/hwakabh/rainpole/issues/98)) ([b79beb6](https://github.com/hwakabh/rainpole/commit/b79beb64df4bbe29f04aa72586ce429167123acf))
+* **auth:** file path to load RSA key. ([#100](https://github.com/hwakabh/rainpole/issues/100)) ([31ff12c](https://github.com/hwakabh/rainpole/commit/31ff12cc859152d6e6fe0b7e02992bd5ebda51ae))
+
+
+### Continuous Integration
+
+* enabled sync-commit-diff actions to automate adding commit message in PR. ([#99](https://github.com/hwakabh/rainpole/issues/99)) ([9677a97](https://github.com/hwakabh/rainpole/commit/9677a97b4e9b3ad4c0307b9e4b0e205a65bf23fd))
+
 ## [0.7.7](https://github.com/hwakabh/rainpole/compare/v0.7.6...v0.7.7) (2025-11-02)
 
 
