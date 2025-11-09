@@ -69,6 +69,7 @@ func AuthHandler(w http.ResponseWriter, r *http.Request) {
 
 func VerifyUser(c UserPassCredentinals) HandlerResponse {
 	fmt.Println(">>> Checking credentials ...")
+	// TODO: fetch from Vault
 	if c.Username == "hwakabh" && c.Password == "changeme" {
 		// Get JWT (header + payload)
 		jwt := IssueJsonWebToken(c.Username)
@@ -114,8 +115,8 @@ func IssueJsonWebToken(username string) string {
 }
 
 func LoadPrivateKey() *rsa.PrivateKey {
-	if _, err := os.Stat("rsa.key"); err == nil {
-		f, _ := os.ReadFile("rsa.key")
+	if _, err := os.Stat(PRIVATE_KEY_PATH); err == nil {
+		f, _ := os.ReadFile(PRIVATE_KEY_PATH)
 		privKeyBlock, _ := pem.Decode(f)
 		privKey, err := x509.ParsePKCS1PrivateKey(privKeyBlock.Bytes)
 		if err != nil {
@@ -128,7 +129,7 @@ func LoadPrivateKey() *rsa.PrivateKey {
 }
 
 func AppendSignature(jwt string) string {
-	fmt.Println(">>> Loading private key file")
+	fmt.Printf(">>> Loading private key file %s\n", PRIVATE_KEY_PATH)
 	k := LoadPrivateKey()
 
 	// sign to jwt with RS256
