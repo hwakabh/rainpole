@@ -17,34 +17,34 @@ func GenerateKeyPair() {
 		fmt.Println("Failed to generate Private Key")
 	}
 
-	if _, err := os.Stat("rsa.key"); err != nil {
+	if _, err := os.Stat(PRIVATE_KEY_PATH); err != nil {
 		privateKeyPem := pem.EncodeToMemory(
 			&pem.Block{
 				Type:  "RSA PRIVATE KEY",
 				Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
 			},
 		)
-		if err := os.WriteFile("rsa.key", privateKeyPem, 0700); err != nil {
-			fmt.Println("Failed to export key file")
+		if err := os.WriteFile(PRIVATE_KEY_PATH, privateKeyPem, 0700); err != nil {
+			fmt.Printf("Failed to export key file to %s\n", PRIVATE_KEY_PATH)
 			os.Exit(1)
 		}
 	}
 
 	// Generate public key
-	fmt.Println(">>> Generating public key from private key ...")
+	fmt.Printf(">>> Generating public key from private key (%s) ...\n", PRIVATE_KEY_PATH)
 	publicKey := privateKey.Public()
 	//-> https://pkg.go.dev/crypto/rsa#PublicKey
 	//-> https://pkg.go.dev/crypto#PublicKey
 
-	if _, err := os.Stat("rsa.pub"); err != nil {
+	if _, err := os.Stat(PUBLIC_KEY_PATH); err != nil {
 		publicKeyPem := pem.EncodeToMemory(
 			&pem.Block{
 				Type:  "RSA PUBLIC KEY",
 				Bytes: x509.MarshalPKCS1PublicKey(publicKey.(*rsa.PublicKey)),
 			},
 		)
-		if err := os.WriteFile("rsa.pub", publicKeyPem, 0700); err != nil {
-			fmt.Println("Failed to export key file")
+		if err := os.WriteFile(PUBLIC_KEY_PATH, publicKeyPem, 0700); err != nil {
+			fmt.Printf("Failed to export key file to %s\n", PUBLIC_KEY_PATH)
 			os.Exit(1)
 		}
 	}
