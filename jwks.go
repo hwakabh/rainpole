@@ -26,8 +26,8 @@ type JWKS struct {
 }
 
 func LoadPublicKey() *rsa.PublicKey {
-	if _, err := os.Stat("rsa.pub"); err == nil {
-		f, _ := os.ReadFile("rsa.pub")
+	if _, err := os.Stat(PUBLIC_KEY_PATH); err == nil {
+		f, _ := os.ReadFile(PUBLIC_KEY_PATH)
 		pubKeyBlock, _ := pem.Decode(f)
 		pubKey, err := x509.ParsePKCS1PublicKey(pubKeyBlock.Bytes)
 		if err != nil {
@@ -43,7 +43,7 @@ func GetJsonWebKeySet(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(nil)
 	}
 
-	fmt.Println(">>> Loading Public Key for JWKS responses ...")
+	fmt.Printf(">>> Loading Public Key (%s) for JWKS responses ...", PUBLIC_KEY_PATH)
 	pub := LoadPublicKey()
 	// modulus
 	n := pub.N

@@ -11,6 +11,11 @@ type RootResponse struct {
 	Body string `json:"content"`
 }
 
+const DB_TYPE string = "sqlite3"
+const DB_URL string = "/tmp/sqlite3.db"
+const PUBLIC_KEY_PATH string = "/tmp/rsa.pub"
+const PRIVATE_KEY_PATH string = "/tmp/rsa.key"
+
 func main() {
 	// Fetch value from envar, and the zero-value of string is ""
 	port := os.Getenv("PORT")

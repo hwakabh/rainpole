@@ -8,9 +8,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-const DB_TYPE string = "sqlite3"
-const DB_URL string = "/tmp/sqlite3.db"
-
 func InitializeDatabase() bool {
 
 	fmt.Println(">>> Checking SQLite3 database file exists ...")
