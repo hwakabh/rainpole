@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.8.1](https://github.com/hwakabh/rainpole/compare/v0.8.0...v0.8.1) (2025-11-24)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v6 ([4071046](https://github.com/hwakabh/rainpole/commit/4071046b6dd0c258ed13abf3f6c854a94465e5a1))
+* **deps:** update actions/checkout action to v6 ([6eddd5c](https://github.com/hwakabh/rainpole/commit/6eddd5c510f8ce4585766fd42eca00f2ed6c2016))
+* **deps:** update dependency go to v1.25.4 ([e105d65](https://github.com/hwakabh/rainpole/commit/e105d653cb3e0e43e2e6808cf9c6cf625e664dd7))
+
 ## [0.8.0](https://github.com/hwakabh/rainpole/compare/v0.7.7...v0.8.0) (2025-11-09)
 
 
