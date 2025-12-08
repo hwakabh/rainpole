@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.2](https://github.com/hwakabh/rainpole/compare/v0.8.1...v0.8.2) (2025-12-08)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency go to v1.25.5 ([9e89046](https://github.com/hwakabh/rainpole/commit/9e8904679e1eed8ea106d012a8dfa19e745f9961))
+* **deps:** update dependency go to v1.25.5 ([a8bdcf8](https://github.com/hwakabh/rainpole/commit/a8bdcf8bcf629bf05ed3f6fc1a08506282df32ec))
+
 ## [0.8.1](https://github.com/hwakabh/rainpole/compare/v0.8.0...v0.8.1) (2025-11-24)
 
 
