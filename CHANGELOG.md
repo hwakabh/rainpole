@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.6](https://github.com/hwakabh/rainpole/compare/v0.8.5...v0.8.6) (2026-07-13)
+
+
+### Documentation
+
+* added archival notes in README. ([3664d89](https://github.com/hwakabh/rainpole/commit/3664d89b1d5098812d633e6eb846ea55c71f0777))
+
 ## [0.8.5](https://github.com/hwakabh/rainpole/compare/v0.8.4...v0.8.5) (2026-02-16)
 
 
