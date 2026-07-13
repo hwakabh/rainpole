@@ -1,4 +1,9 @@
 # rainpole
+THIS PROJECT HAS BEEN ARCHIVED WITH MIGRATED FROM GITHUB. 
+FOR FUTURE MAINTENANCE, SEE https://gitlab.com/hwakabh-dev/rainpole
+
+---
+
 Dummy Company APIs with Go
 
 ## Local Setup
